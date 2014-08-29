@@ -39,6 +39,7 @@ public class MergePropertiesMojoTest {
         mojo.setMavenResourcesFiltering(filtering);
 
         mojo.setProject(new MavenProject());
+        mojo.setLog(new SilentLog());
     }
 
     @Test
