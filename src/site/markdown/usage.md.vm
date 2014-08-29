@@ -1,0 +1,89 @@
+Usage
+=====
+
+The Merge Properties Maven Plugin merges properties files specified by Resource elements to the an output file located in an output directory.
+There is currently only one goal *[merge](usage.html)* that by default is bound to the `process-resources` phase.
+
+This plugin is based on the [maven-resources-plugin](http://maven.apache.org/plugins/maven-resources-plugin/)
+and has a very similar configuration.
+
+To handle filtering this version of Merge Properties Maven Plugin uses 
+[Maven Filtering](http://maven.apache.org/shared/maven-filtering/index.html) ${mavenFilteringVersion}.
+
+Example
+-------
+
+The following example merges all properties files into one single output file named `target/merged/out.properties`.
+
+    <plugin>
+      <groupId>${docGroupId}</groupId>
+      <artifactId>${docArtifactId}</artifactId>
+      <version>${docVersion}</version>
+      <configuration>
+        <outputDirectory>${basedir}/target/merged</outputDirectory>
+        <outputFile>out.properties</outputFile>
+        <resources>
+          <resource>
+            <directory>src/main/properties</directory>
+            <filtering>true</filtering>
+          </resource>
+        </resources>
+      </configuration>
+      <executions>
+        <execution>
+          <goals>
+            <goal>merge</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+ 
+ The following example merges resource bundles properties files into one file per Locale
+
+    <plugin>
+      <groupId>${docGroupId}</groupId>
+      <artifactId>${docArtifactId}</artifactId>
+      <version>${docVersion}</version>
+      <configuration>
+        <outputDirectory>${basedir}/target/merged</outputDirectory>
+      </configuration>
+      <executions>
+        <execution>
+          <id>merge-en</id>
+          <goals>
+            <goal>merge</goal>
+          </goals>
+          <configuration>
+            <outputFile>Resources_en.properties</outputFile>
+            <resources>
+              <resource>
+                <directory>src/main/properties</directory>
+                <filtering>true</filtering>
+                <includes>
+                  <include>**/*_en.properties</include>
+                </includes>
+              </resource>
+            </resources>
+          </configuration>
+        </execution>
+        <execution>
+          <id>merge-fr</id>
+          <goals>
+            <goal>merge</goal>
+          </goals>
+          <configuration>
+            <outputFile>Resources_fr.properties</outputFile>
+            <resources>
+              <resource>
+                <directory>src/main/properties</directory>
+                <filtering>true</filtering>
+                <includes>
+                  <include>**/*_fr.properties</include>
+                </includes>
+              </resource>
+            </resources>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+ 
