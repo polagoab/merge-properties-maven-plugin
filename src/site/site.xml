@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
- - Copyright 2014 Polago AB.
+ - Copyright 2014-2015 Polago AB.
  -
  - Licensed under the Apache License, Version 2.0 (the "License");
  - you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
   <bannerLeft>
     <name>${project.organization.name}</name>
     <src>images/polago.png</src>
-    <href>${project.url}</href>
+    <href>http://www.polago.org/</href>
   </bannerLeft>
 
   <skin>
