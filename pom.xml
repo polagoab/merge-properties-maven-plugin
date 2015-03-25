@@ -78,6 +78,11 @@
     <url>http://www.polago.com/</url>
   </organization>
 
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/polagoab/merge-properties-maven-plugin/issues</url>
+  </issueManagement>
+
   <distributionManagement>
     <site>
       <id>website</id>
