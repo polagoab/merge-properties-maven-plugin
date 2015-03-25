@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
- - Copyright 2014 Polago AB.
+ - Copyright 2014-2015 Polago AB.
  -
  - Licensed under the Apache License, Version 2.0 (the "License");
  - you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>Merge Properties Maven Plugin</name>
-  <url>http://www.polago.org/maven/merge-properties-maven-plugin/</url>
+  <url>http://www.polago.org/merge-properties-maven-plugin/</url>
 
   <description>
     Merge Properties Maven Plugin is a Maven Plugin that merges and filtering a 
