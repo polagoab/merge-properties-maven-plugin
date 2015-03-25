@@ -83,6 +83,11 @@
     <url>https://github.com/polagoab/merge-properties-maven-plugin/issues</url>
   </issueManagement>
 
+  <ciManagement>
+    <system>Travis</system>
+    <url>https://travis-ci.org/polagoab/merge-properties-maven-plugin</url>
+  </ciManagement>
+
   <scm>
     <connection>scm:git:https://github.com/polagoab/merge-properties-maven-plugin.git</connection>
     <developerConnection>scm:git:https://github.com/polagoab/merge-properties-maven-plugin.git</developerConnection>
