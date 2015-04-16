@@ -151,10 +151,10 @@
         <module name="EmptyForIteratorPad"/>
         <module name="MethodParamPad"/>
         <module name="NoWhitespaceAfter">
-          <property name="tokens" value="ARRAY_INIT,BNOT,DEC,DOT,INC,LNOT,UNARY_MINUS,UNARY_PLUS,GENERIC_START"/>
+          <property name="tokens" value="ARRAY_INIT,BNOT,DEC,DOT,INC,LNOT,UNARY_MINUS,UNARY_PLUS,ARRAY_DECLARATOR"/>
         </module>
         <module name="NoWhitespaceBefore">
-          <property name="tokens" value="GENERIC_START,GENERIC_END"/>
+          <property name="tokens" value="SEMI, POST_DEC, POST_INC"/>
         </module>
         <module name="OperatorWrap"/>
         <module name="ParenPad"/>
