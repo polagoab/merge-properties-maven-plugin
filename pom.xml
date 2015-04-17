@@ -51,19 +51,6 @@
 
   <inceptionYear>2014</inceptionYear>
 
-  <developers>
-    <developer>
-      <name>Per Landberg</name>
-      <id>perlan</id>
-      <email>per.landberg@polago.se</email>
-      <organization>Polago AB</organization>
-      <organizationUrl>http://www.polago.com/</organizationUrl>
-      <roles>
-        <role>Project Lead</role>
-      </roles>
-    </developer>
-  </developers>
-
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -77,6 +64,21 @@
     <name>Polago AB</name>
     <url>http://www.polago.com/</url>
   </organization>
+
+  <developers>
+    <developer>
+      <name>Per Landberg</name>
+      <id>perlan</id>
+      <email>per.landberg@polago.se</email>
+      <url>https://github.com/perlan</url>
+      <organization>Polago AB</organization>
+      <organizationUrl>http://www.polago.com/</organizationUrl>
+      <roles>
+        <role>Project Lead</role>
+      </roles>
+      <timezone>Europe/Stockholm</timezone>
+    </developer>
+  </developers>
 
   <issueManagement>
     <system>GitHub</system>
