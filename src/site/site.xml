@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
  - Copyright 2014-2015 Polago AB.
  -
@@ -23,12 +23,28 @@
   </bannerLeft>
 
   <skin>
-    <groupId>org.apache.maven.skins</groupId>
-    <artifactId>maven-fluido-skin</artifactId>
-    <version>1.3.1</version>
+    <groupId>lt.velykis.maven.skins</groupId>
+    <artifactId>reflow-maven-skin</artifactId>
+    <version>1.1.1</version>
   </skin>
 
-  <publishDate format="yyyy-MM-dd" />
+  <publishDate position="bottom" format="yyyy-MM-dd" />
+  <version position="bottom" />
+
+  <custom>
+    <reflowSkin>
+      <brand>
+        <name>${project.name}</name>
+        <href>${project.url}</href>
+      </brand>
+      <bottomNav>
+        <column>Overview</column>
+        <column>reports</column>
+      </bottomNav>
+      <titleTemplate>${project.name} - %2$s</titleTemplate>
+      <skinAttribution>false</skinAttribution>
+    </reflowSkin>
+  </custom>
 
   <body>
     <head>
@@ -48,14 +64,13 @@
       <item name="${project.name}" href="http://www.polago.org/${project.artifactId}" />
     </breadcrumbs>
 
-    <links>
-      <item name="Polago.com" href="http://www.polago.com/" />
-    </links>
-
     <menu name="Overview">
       <item name="Introduction" href="index.html" />
       <item name="Goals" href="plugin-info.html" />
       <item name="Usage" href="usage.html" />
+      <item name="Polago.com" href="${organization.url}"/>
+      <item name="${issueManagement.system}" href="${issueManagement.url}"/>
+      <item name="${ciManagement.system}" href="${ciManagement.url}"/>
     </menu>
 
     <menu ref="reports" />

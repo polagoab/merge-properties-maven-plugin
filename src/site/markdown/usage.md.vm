@@ -1,8 +1,9 @@
 Usage
 =====
 
-The Merge Properties Maven Plugin merges properties files specified by Resource elements to the an output file located in an output directory.
-There is currently only one goal *[merge](usage.html)* that by default is bound to the `process-resources` phase.
+The Merge Properties Maven Plugin merges properties files specified by Resource elements to the an output file located
+in an output directory. There is currently only one goal *[merge](usage.html)* that by default is bound to the
+`process-resources` phase.
 
 This plugin is based on the [maven-resources-plugin](http://maven.apache.org/plugins/maven-resources-plugin/)
 and has a very similar configuration.
@@ -13,14 +14,15 @@ To handle filtering this version of Merge Properties Maven Plugin uses
 Example
 -------
 
-The following example merges all properties files into one single output file named `target/merged/out.properties`.
+The following example merges all properties files into one single output file named
+`target/generated-resources/out.properties`.
 
     <plugin>
       <groupId>${docGroupId}</groupId>
       <artifactId>${docArtifactId}</artifactId>
       <version>${docVersion}</version>
       <configuration>
-        <outputDirectory>${basedir}/target/merged</outputDirectory>
+        <outputDirectory${project.build.directory}/generated-resources</outputDirectory>
         <outputFile>out.properties</outputFile>
         <resources>
           <resource>
@@ -45,7 +47,7 @@ The following example merges all properties files into one single output file na
       <artifactId>${docArtifactId}</artifactId>
       <version>${docVersion}</version>
       <configuration>
-        <outputDirectory>${basedir}/target/merged</outputDirectory>
+        <outputDirectory>${project.build.directory}/generated-resources</outputDirectory>
       </configuration>
       <executions>
         <execution>
@@ -67,18 +69,18 @@ The following example merges all properties files into one single output file na
           </configuration>
         </execution>
         <execution>
-          <id>merge-fr</id>
+          <id>merge-sv</id>
           <goals>
             <goal>merge</goal>
           </goals>
           <configuration>
-            <outputFile>Resources_fr.properties</outputFile>
+            <outputFile>Resources_sv.properties</outputFile>
             <resources>
               <resource>
                 <directory>src/main/properties</directory>
                 <filtering>true</filtering>
                 <includes>
-                  <include>**/*_fr.properties</include>
+                  <include>**/*_sv.properties</include>
                 </includes>
               </resource>
             </resources>
