@@ -38,7 +38,8 @@
         <href>${project.url}</href>
       </brand>
       <bottomNav>
-        <column>Overview</column>
+        <column>Documentation</column>
+        <column>Resources</column>
         <column>reports</column>
       </bottomNav>
       <titleTemplate>${project.name} - %2$s</titleTemplate>
@@ -64,13 +65,16 @@
       <item name="${project.name}" href="http://www.polago.org/${project.artifactId}" />
     </breadcrumbs>
 
-    <menu name="Overview">
+    <menu name="Documentation">
       <item name="Introduction" href="index.html" />
       <item name="Goals" href="plugin-info.html" />
       <item name="Usage" href="usage.html" />
-      <item name="Polago.com" href="${organization.url}"/>
-      <item name="${issueManagement.system}" href="${issueManagement.url}"/>
-      <item name="${ciManagement.system}" href="${ciManagement.url}"/>
+    </menu>
+
+    <menu name="Resources">
+      <item name="Polago.com" href="${organization.url}" />
+      <item name="${issueManagement.system}" href="${issueManagement.url}" />
+      <item name="${ciManagement.system}" href="${ciManagement.url}" />
     </menu>
 
     <menu ref="reports" />
