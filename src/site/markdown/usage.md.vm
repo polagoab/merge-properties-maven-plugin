@@ -6,7 +6,7 @@ in an output directory. There is currently only one goal *[merge](usage.html)* t
 `process-resources` phase.
 
 This plugin is based on the [maven-resources-plugin](http://maven.apache.org/plugins/maven-resources-plugin/)
-and has a very similar configuration.
+and has a very similar [configuration](plugin-info.html).
 
 To handle filtering this version of Merge Properties Maven Plugin uses 
 [Maven Filtering](http://maven.apache.org/shared/maven-filtering/index.html) ${mavenFilteringVersion}.
@@ -14,15 +14,14 @@ To handle filtering this version of Merge Properties Maven Plugin uses
 Example
 -------
 
-The following example merges all properties files into one single output file named
-`target/generated-resources/out.properties`.
+The following example merges all properties files into one single output file:
 
     <plugin>
       <groupId>${docGroupId}</groupId>
       <artifactId>${docArtifactId}</artifactId>
       <version>${docVersion}</version>
       <configuration>
-        <outputDirectory${project.build.directory}/generated-resources</outputDirectory>
+        <outputDirectory#[[${project.build.directory}/generated-resources]]#</outputDirectory>
         <outputFile>out.properties</outputFile>
         <resources>
           <resource>
@@ -40,14 +39,14 @@ The following example merges all properties files into one single output file na
       </executions>
     </plugin>
  
- The following example merges resource bundles properties files into one file per Locale
+ The following example merges resource bundles properties files into one file per Locale:
 
     <plugin>
       <groupId>${docGroupId}</groupId>
       <artifactId>${docArtifactId}</artifactId>
       <version>${docVersion}</version>
       <configuration>
-        <outputDirectory>${project.build.directory}/generated-resources</outputDirectory>
+        <outputDirectory>#[[${project.build.directory}/generated-resources]]#</outputDirectory>
       </configuration>
       <executions>
         <execution>
