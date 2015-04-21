@@ -1,0 +1,6 @@
+Download ${project.name}
+========================
+
+${project.name} will soon be available from [The Central Repository](https://search.maven.org/).
+
+It is highly recommended to verify signatures against the public [KEYS](KEYS) used to sign the artifacts.
