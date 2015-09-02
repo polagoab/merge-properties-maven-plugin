@@ -1,5 +1,5 @@
 /*
- * Copyright 1014 Polago AB.
+ * Copyright 1014-2015 Polago AB.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -236,16 +236,14 @@ public class MergePropertiesMojo extends AbstractMojo implements Contextualizabl
         try {
 
             if (StringUtils.isEmpty(encoding) && isFilteringEnabled(getResources())) {
-                getLog().warn(
-                    "File encoding has not been set, using platform encoding " + ReaderFactory.FILE_ENCODING
-                        + ", i.e. build is platform dependent!");
+                getLog().warn("File encoding has not been set, using platform encoding " + ReaderFactory.FILE_ENCODING
+                    + ", i.e. build is platform dependent!");
             }
 
             List<String> combinedFilters = getCombinedFiltersList();
 
-            MavenResourcesExecution mavenResourcesExecution =
-                new MavenResourcesExecution(getResources(), getOutputDirectory(), project, encoding, combinedFilters,
-                    Collections.<String> emptyList(), session);
+            MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution(getResources(),
+                getOutputDirectory(), project, encoding, combinedFilters, Collections.<String> emptyList(), session);
 
             mavenResourcesExecution.setEscapeWindowsPaths(escapeWindowsPaths);
 
@@ -303,8 +301,8 @@ public class MergePropertiesMojo extends AbstractMojo implements Contextualizabl
         if (mavenFilteringHints != null) {
             for (String hint : mavenFilteringHints) {
                 try {
-                    mavenFilteringComponents.add((MavenResourcesFiltering) plexusContainer.lookup(
-                        MavenResourcesFiltering.class.getName(), hint));
+                    mavenFilteringComponents.add((MavenResourcesFiltering) plexusContainer
+                        .lookup(MavenResourcesFiltering.class.getName(), hint));
                 } catch (ComponentLookupException e) {
                     throw new MojoExecutionException(e.getMessage(), e);
                 }
