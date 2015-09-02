@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Polago AB.
+ * Copyright 2014-2015 Polago AB.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,8 +73,8 @@ import org.sonatype.plexus.build.incremental.BuildContext;
  * MavenResourcesFiltering Plexus Component that merges properties into a single file.
  */
 @Component(role = MavenResourcesFiltering.class, hint = "merge")
-public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled implements MavenResourcesFiltering,
-    Initializable {
+public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
+    implements MavenResourcesFiltering, Initializable {
 
     private static final String[] EMPTY_STRING_ARRAY = {};
 
@@ -104,10 +104,9 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled i
     @Override
     public void filterResources(List<Resource> resources, File outputDirectory, MavenProject mavenProject,
         String encoding, List<String> fileFilters, List<String> nonFilteredFileExtensions, MavenSession mavenSession)
-        throws MavenFilteringException {
-        MavenResourcesExecution mavenResourcesExecution =
-            new MavenResourcesExecution(resources, outputDirectory, mavenProject, encoding, fileFilters,
-                nonFilteredFileExtensions, mavenSession);
+            throws MavenFilteringException {
+        MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution(resources, outputDirectory,
+            mavenProject, encoding, fileFilters, nonFilteredFileExtensions, mavenSession);
         mavenResourcesExecution.setUseDefaultFilterWrappers(true);
 
         filterResources(mavenResourcesExecution);
@@ -120,9 +119,8 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled i
     public void filterResources(List<Resource> resources, File outputDirectory, String encoding,
         List<FileUtils.FilterWrapper> filterWrappers, File resourcesBaseDirectory,
         List<String> nonFilteredFileExtensions) throws MavenFilteringException {
-        MavenResourcesExecution mavenResourcesExecution =
-            new MavenResourcesExecution(resources, outputDirectory, encoding, filterWrappers, resourcesBaseDirectory,
-                nonFilteredFileExtensions);
+        MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution(resources, outputDirectory,
+            encoding, filterWrappers, resourcesBaseDirectory, nonFilteredFileExtensions);
         filterResources(mavenResourcesExecution);
     }
 
@@ -184,11 +182,10 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled i
         }
 
         if (mavenResourcesExecution.getEncoding() == null || mavenResourcesExecution.getEncoding().length() < 1) {
-            getLogger().warn(
-                "Using platform encoding (" + ReaderFactory.FILE_ENCODING
-                    + " actually) to merge properties, i.e. build is platform dependent!");
+            getLogger().warn("Using platform encoding (" + ReaderFactory.FILE_ENCODING
+                + " actually) to merge properties, i.e. build is platform dependent!");
         } else {
-            getLogger().info("Using '" + mavenResourcesExecution.getEncoding() + "' encoding to merge propertie.");
+            getLogger().info("Using '" + mavenResourcesExecution.getEncoding() + "' encoding to merge properties.");
         }
 
         Properties outputProperties = new Properties();
@@ -201,11 +198,12 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled i
                 StringBuffer debugMessage =
                     new StringBuffer("Resource with targetPath " + resource.getTargetPath()).append(ls);
                 debugMessage.append("directory " + resource.getDirectory()).append(ls);
-                debugMessage.append(
-                    "excludes " + (resource.getExcludes() == null ? " empty " : resource.getExcludes().toString()))
+                debugMessage
+                    .append(
+                        "excludes " + (resource.getExcludes() == null ? " empty " : resource.getExcludes().toString()))
                     .append(ls);
-                debugMessage.append("includes "
-                    + (resource.getIncludes() == null ? " empty " : resource.getIncludes().toString()));
+                debugMessage.append(
+                    "includes " + (resource.getIncludes() == null ? " empty " : resource.getIncludes().toString()));
                 getLogger().debug(debugMessage.toString());
             }
 
@@ -232,9 +230,8 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled i
                 throw new MavenFilteringException("Cannot create resource output directory: " + outputDirectory);
             }
 
-            boolean ignoreDelta =
-                !outputExists || buildContext.hasDelta(mavenResourcesExecution.getFileFilters())
-                    || buildContext.hasDelta(getRelativeOutputDirectory(mavenResourcesExecution));
+            boolean ignoreDelta = !outputExists || buildContext.hasDelta(mavenResourcesExecution.getFileFilters())
+                || buildContext.hasDelta(getRelativeOutputDirectory(mavenResourcesExecution));
             getLogger().debug("ignoreDelta " + ignoreDelta);
             Scanner scanner = buildContext.newScanner(resourceDirectory, ignoreDelta);
 
@@ -243,10 +240,19 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled i
             scanner.scan();
 
             List<String> includedFiles = Arrays.asList(scanner.getIncludedFiles());
+            if (ignoreDelta == false && buildContext.isIncremental() && !includedFiles.isEmpty()) {
+                // Perform a full scan since we need to consider all files when the file list is nonEmpty in
+                // an incremental build
+                getLogger().debug("Reverting to full scan");
 
-            getLogger().info(
-                "Merging " + includedFiles.size() + " resource" + (includedFiles.size() > 1 ? "s" : "")
-                    + (targetPath == null ? "" : " to " + targetPath));
+                scanner = buildContext.newScanner(resourceDirectory, true);
+                setupScanner(resource, scanner);
+                scanner.scan();
+                includedFiles = Arrays.asList(scanner.getIncludedFiles());
+            }
+
+            getLogger().info("Merging " + includedFiles.size() + " resource" + (includedFiles.size() > 1 ? "s" : "")
+                + (targetPath == null ? "" : " to " + targetPath));
 
             for (String name : includedFiles) {
 
@@ -266,6 +272,8 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled i
         File destinationFile = getDestinationFile(mavenResourcesExecution.getOutputDirectory(), outputFile);
         if (mavenResourcesExecution.isOverwrite() || lastModified > destinationFile.lastModified()) {
             storeProperties(outputProperties, destinationFile);
+        } else {
+            getLogger().info("Skipping merge since no files were modified");
         }
     }
 
@@ -399,9 +407,8 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled i
                 if (existing != null) {
                     if (overwrite) {
                         properties.setProperty(key, value);
-                        getLogger().info(
-                            "Overwriting existing Property '" + key + "' (existing value is '" + existing
-                                + "', new value is '" + value + "') while merging source: " + source);
+                        getLogger().info("Overwriting existing Property '" + key + "' (existing value is '" + existing
+                            + "', new value is '" + value + "') while merging source: " + source);
                     } else {
                         throw new MavenFilteringException("Property '" + key + "' already exists (existing value is '"
                             + existing + "', new value is '" + value + "') while merging source: " + source);

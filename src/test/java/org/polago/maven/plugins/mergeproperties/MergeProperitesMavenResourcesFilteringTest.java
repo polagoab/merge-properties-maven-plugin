@@ -1,5 +1,5 @@
 /*
- * Copyright 1014 Polago AB.
+ * Copyright 1014-2015 Polago AB.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ import org.apache.maven.plugin.testing.SilentLog;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.codehaus.plexus.util.FileUtils.FilterWrapper;
+import org.codehaus.plexus.util.Scanner;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonatype.plexus.build.incremental.DefaultBuildContext;
@@ -72,6 +73,47 @@ public class MergeProperitesMavenResourcesFilteringTest {
 
     };
 
+    static class TestBuildContext extends DefaultBuildContext {
+        boolean isIncremental = false;
+
+        boolean hasDelta = true;
+
+        boolean ignoreDelta;
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Scanner newScanner(File basedir, boolean ignoreDelta) {
+            this.ignoreDelta = ignoreDelta;
+            return super.newScanner(basedir, ignoreDelta);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isIncremental() {
+            return isIncremental;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean hasDelta(String relpath) {
+            return hasDelta;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean hasDelta(@SuppressWarnings("rawtypes") List relpaths) {
+            return hasDelta;
+        }
+    }
+
     private TestMergeProperitesMavenResourcesFiltering filtering;
 
     private final String outputFile = "out.properties";
@@ -79,6 +121,8 @@ public class MergeProperitesMavenResourcesFilteringTest {
     private final File outputDirectory = new File("target");
 
     private final File sourceDirectory = new File("src/test/resources");
+
+    private final TestBuildContext buildContext = new TestBuildContext();
 
     private TestFilterWrapper filterWrapper;
 
@@ -89,7 +133,7 @@ public class MergeProperitesMavenResourcesFilteringTest {
         filtering = new TestMergeProperitesMavenResourcesFiltering();
         filtering.enableLogging(new SilentLog());
         filtering.setOutputFile(outputFile);
-        filtering.setBuildContext(new DefaultBuildContext());
+        filtering.setBuildContext(buildContext);
         filtering.setOverwriteProperties(true);
 
         filterWrapper = new TestFilterWrapper();
@@ -179,6 +223,33 @@ public class MergeProperitesMavenResourcesFilteringTest {
         } catch (MavenFilteringException e) {
             // OK
         }
+    }
+
+    @Test
+    public void testIncrementalFilteringResources() throws MavenFilteringException, IOException {
+        buildContext.isIncremental = true;
+        buildContext.hasDelta = false;
+
+        List<Resource> resources = new ArrayList<Resource>();
+        Resource resource = new Resource();
+        resource.setDirectory(sourceDirectory.getPath());
+        resource.setFiltering(true);
+        resources.add(resource);
+
+        MavenResourcesExecution execution = new MavenResourcesExecution();
+        execution.setResources(resources);
+        execution.setOutputDirectory(outputDirectory);
+        execution.setEncoding("UTF-8");
+        execution.setFilterWrappers(filterWrappers);
+
+        filtering.filterResources(execution);
+
+        assertNotNull(filtering.storedProperties);
+        assertNotNull(filtering.storedFile);
+
+        assertEquals(true, buildContext.ignoreDelta);
+        assertEquals(4, filtering.storedProperties.size());
+        assertTrue(filterWrapper.called);
     }
 
 }
