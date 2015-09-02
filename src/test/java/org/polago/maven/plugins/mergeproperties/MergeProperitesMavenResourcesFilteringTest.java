@@ -252,4 +252,32 @@ public class MergeProperitesMavenResourcesFilteringTest {
         assertTrue(filterWrapper.called);
     }
 
+    @Test
+    public void testOverwriteIncrementalFilteringResources() throws MavenFilteringException, IOException {
+        buildContext.isIncremental = false;
+        buildContext.hasDelta = false;
+
+        List<Resource> resources = new ArrayList<Resource>();
+        Resource resource = new Resource();
+        resource.setDirectory(sourceDirectory.getPath());
+        resource.setFiltering(true);
+        resources.add(resource);
+
+        MavenResourcesExecution execution = new MavenResourcesExecution();
+        execution.setResources(resources);
+        execution.setOutputDirectory(outputDirectory);
+        execution.setEncoding("UTF-8");
+        execution.setFilterWrappers(filterWrappers);
+        execution.setOverwrite(true);
+
+        filtering.filterResources(execution);
+
+        assertNotNull(filtering.storedProperties);
+        assertNotNull(filtering.storedFile);
+
+        assertEquals(true, buildContext.ignoreDelta);
+        assertEquals(4, filtering.storedProperties.size());
+        assertTrue(filterWrapper.called);
+    }
+
 }

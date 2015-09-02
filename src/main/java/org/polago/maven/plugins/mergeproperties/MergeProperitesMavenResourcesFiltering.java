@@ -230,7 +230,8 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
                 throw new MavenFilteringException("Cannot create resource output directory: " + outputDirectory);
             }
 
-            boolean ignoreDelta = !outputExists || buildContext.hasDelta(mavenResourcesExecution.getFileFilters())
+            boolean ignoreDelta = !outputExists || mavenResourcesExecution.isOverwrite()
+                || buildContext.hasDelta(mavenResourcesExecution.getFileFilters())
                 || buildContext.hasDelta(getRelativeOutputDirectory(mavenResourcesExecution));
             getLogger().debug("ignoreDelta " + ignoreDelta);
             Scanner scanner = buildContext.newScanner(resourceDirectory, ignoreDelta);
