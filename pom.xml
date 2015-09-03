@@ -21,7 +21,7 @@
 
   <groupId>org.polago.maven.plugins</groupId>
   <artifactId>merge-properties-maven-plugin</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.0.1</version>
   <packaging>maven-plugin</packaging>
   <name>Merge Properties Maven Plugin</name>
   <url>http://www.polago.org/merge-properties-maven-plugin/</url>
