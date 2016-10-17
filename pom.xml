@@ -39,7 +39,7 @@
     <mavenVersion>3.0.4</mavenVersion>
     <mavenPluginPluginVersion>3.4</mavenPluginPluginVersion>
     <jdkVersion>1.7</jdkVersion>
-    <surefireVersion>2.18.1</surefireVersion>
+    <surefireVersion>2.19.1</surefireVersion>
     <docGroupId>${project.groupId}</docGroupId>
     <docArtifactId>${project.artifactId}</docArtifactId>
     <docVersion>${project.version}</docVersion>
