@@ -1,5 +1,5 @@
 /*
- * Copyright 1014-2015 Polago AB.
+ * Copyright 1014-2016 Polago AB.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.testing.SilentLog;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
-import org.codehaus.plexus.util.FileUtils.FilterWrapper;
+import org.apache.maven.shared.utils.io.FileUtils.FilterWrapper;
 import org.codehaus.plexus.util.Scanner;
 import org.junit.Before;
 import org.junit.Test;

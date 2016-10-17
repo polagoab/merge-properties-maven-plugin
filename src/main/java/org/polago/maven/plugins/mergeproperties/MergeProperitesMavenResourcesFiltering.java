@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 Polago AB.
+ * Copyright 2014-2016 Polago AB.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,13 +56,13 @@ import org.apache.maven.shared.filtering.MavenFileFilter;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
+import org.apache.maven.shared.utils.io.FileUtils;
+import org.apache.maven.shared.utils.io.FileUtils.FilterWrapper;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.FileUtils.FilterWrapper;
 import org.codehaus.plexus.util.PathTool;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.Scanner;
@@ -97,32 +97,6 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
     private String outputFile;
 
     private boolean overwriteProperties = false;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void filterResources(List<Resource> resources, File outputDirectory, MavenProject mavenProject,
-        String encoding, List<String> fileFilters, List<String> nonFilteredFileExtensions, MavenSession mavenSession)
-            throws MavenFilteringException {
-        MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution(resources, outputDirectory,
-            mavenProject, encoding, fileFilters, nonFilteredFileExtensions, mavenSession);
-        mavenResourcesExecution.setUseDefaultFilterWrappers(true);
-
-        filterResources(mavenResourcesExecution);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void filterResources(List<Resource> resources, File outputDirectory, String encoding,
-        List<FileUtils.FilterWrapper> filterWrappers, File resourcesBaseDirectory,
-        List<String> nonFilteredFileExtensions) throws MavenFilteringException {
-        MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution(resources, outputDirectory,
-            encoding, filterWrappers, resourcesBaseDirectory, nonFilteredFileExtensions);
-        filterResources(mavenResourcesExecution);
-    }
 
     /**
      * {@inheritDoc}

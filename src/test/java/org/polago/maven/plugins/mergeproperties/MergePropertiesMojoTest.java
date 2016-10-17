@@ -1,5 +1,5 @@
 /*
- * Copyright 1014 Polago AB.
+ * Copyright 1014-2016 Polago AB.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests the {@link MergePropertiestMojo} class.
+ * Tests the {@link MergePropertiesMojo} class.
  */
 public class MergePropertiesMojoTest {
 
