@@ -801,7 +801,6 @@
                 <goal>process-resources</goal>
               </goals>
               <settingsFile>src/it/settings.xml</settingsFile>
-              <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
             </configuration>
             <executions>
               <execution>
