@@ -756,8 +756,8 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>${project.artifactId}</artifactId>
+            <groupId>org.polago.maven.plugins</groupId>
+            <artifactId>merge-properties-maven-plugin</artifactId>
             <version>${project.version}</version>
             <configuration>
               <outputDirectory>${basedir}/target/merged</outputDirectory>
