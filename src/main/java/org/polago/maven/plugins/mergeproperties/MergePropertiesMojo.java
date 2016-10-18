@@ -434,7 +434,7 @@ public class MergePropertiesMojo extends AbstractMojo implements Contextualizabl
     }
 
     /**
-     * gets the skip property value.
+     * Gets the skip property value.
      *
      * @return the current value of the skip property
      */
