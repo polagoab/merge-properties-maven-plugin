@@ -56,6 +56,9 @@ import org.apache.maven.shared.filtering.MavenFileFilter;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
+import org.apache.maven.shared.utils.PathTool;
+import org.apache.maven.shared.utils.ReaderFactory;
+import org.apache.maven.shared.utils.StringUtils;
 import org.apache.maven.shared.utils.io.FileUtils;
 import org.apache.maven.shared.utils.io.FileUtils.FilterWrapper;
 import org.codehaus.plexus.component.annotations.Component;
@@ -63,10 +66,7 @@ import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
-import org.codehaus.plexus.util.PathTool;
-import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.Scanner;
-import org.codehaus.plexus.util.StringUtils;
 import org.sonatype.plexus.build.incremental.BuildContext;
 
 /**
@@ -97,6 +97,15 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
     private String outputFile;
 
     private boolean overwriteProperties = false;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void initialize() throws InitializationException {
+
+        this.defaultNonFilteredFileExtensions = new ArrayList<String>();
+    }
 
     /**
      * {@inheritDoc}
@@ -147,12 +156,7 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
         }
 
         if (mavenResourcesExecution.isUseDefaultFilterWrappers()) {
-            List<FileUtils.FilterWrapper> filterWrappers = new ArrayList<FileUtils.FilterWrapper>();
-            if (mavenResourcesExecution.getFilterWrappers() != null) {
-                filterWrappers.addAll(mavenResourcesExecution.getFilterWrappers());
-            }
-            filterWrappers.addAll(mavenFileFilter.getDefaultFilterWrappers(mavenResourcesExecution));
-            mavenResourcesExecution.setFilterWrappers(filterWrappers);
+            handleDefaultFilterWrappers(mavenResourcesExecution);
         }
 
         if (mavenResourcesExecution.getEncoding() == null || mavenResourcesExecution.getEncoding().length() < 1) {
@@ -195,9 +199,7 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
                 continue;
             }
 
-            // this part is required in case the user specified "../something"
-            // as destination
-            // see MNG-1345
+            // this part is required in case the user specified "../something" as destination. See MNG-1345.
             File outputDirectory = mavenResourcesExecution.getOutputDirectory();
             boolean outputExists = outputDirectory.exists();
             if (!outputExists && !outputDirectory.mkdirs()) {
@@ -210,7 +212,7 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
             getLogger().debug("ignoreDelta " + ignoreDelta);
             Scanner scanner = buildContext.newScanner(resourceDirectory, ignoreDelta);
 
-            setupScanner(resource, scanner);
+            setupScanner(resource, scanner, mavenResourcesExecution.isAddDefaultExcludes());
 
             scanner.scan();
 
@@ -221,7 +223,7 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
                 getLogger().debug("Reverting to full scan");
 
                 scanner = buildContext.newScanner(resourceDirectory, true);
-                setupScanner(resource, scanner);
+                setupScanner(resource, scanner, mavenResourcesExecution.isAddDefaultExcludes());
                 scanner.scan();
                 includedFiles = Arrays.asList(scanner.getIncludedFiles());
             }
@@ -230,7 +232,7 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
                 + (targetPath == null ? "" : " to " + targetPath));
 
             for (String name : includedFiles) {
-
+                getLogger().debug("Processing file " + name);
                 File source = new File(resourceDirectory, name);
                 lastModified = Math.max(lastModified, source.lastModified());
 
@@ -250,6 +252,22 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
         } else {
             getLogger().info("Skipping merge since no files were modified");
         }
+    }
+
+    /**
+     * Add Default Filter Wrappers to the MavenResourcesExecution instance.
+     *
+     * @param mavenResourcesExecution the instance to modify
+     * @throws MavenFilteringException indicating error
+     */
+    private void handleDefaultFilterWrappers(MavenResourcesExecution mavenResourcesExecution)
+        throws MavenFilteringException {
+        List<FileUtils.FilterWrapper> filterWrappers = new ArrayList<FileUtils.FilterWrapper>();
+        if (mavenResourcesExecution.getFilterWrappers() != null) {
+            filterWrappers.addAll(mavenResourcesExecution.getFilterWrappers());
+        }
+        filterWrappers.addAll(mavenFileFilter.getDefaultFilterWrappers(mavenResourcesExecution));
+        mavenResourcesExecution.setFilterWrappers(filterWrappers);
     }
 
     /**
@@ -276,8 +294,9 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
      *
      * @param resource the Resource to process
      * @param scanner the Scanner to setup
+     * @param addDefaultExcludes if true, add default excludes to the Scanner
      */
-    private void setupScanner(Resource resource, Scanner scanner) {
+    private void setupScanner(Resource resource, Scanner scanner, boolean addDefaultExcludes) {
         String[] includes = null;
         if (resource.getIncludes() != null && !resource.getIncludes().isEmpty()) {
             includes = resource.getIncludes().toArray(EMPTY_STRING_ARRAY);
@@ -290,6 +309,10 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
         if (resource.getExcludes() != null && !resource.getExcludes().isEmpty()) {
             excludes = resource.getExcludes().toArray(EMPTY_STRING_ARRAY);
             scanner.setExcludes(excludes);
+        }
+
+        if (addDefaultExcludes) {
+            scanner.addDefaultExcludes();
         }
 
         scanner.addDefaultExcludes();
@@ -315,12 +338,6 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
         }
 
         return relOutDir;
-    }
-
-    @Override
-    public void initialize() throws InitializationException {
-
-        this.defaultNonFilteredFileExtensions = new ArrayList<String>();
     }
 
     /**
