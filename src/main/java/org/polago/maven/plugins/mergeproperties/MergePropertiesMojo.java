@@ -1,5 +1,5 @@
 /*
- * Copyright 1014-2015 Polago AB.
+ * Copyright 1014-2016 Polago AB.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
@@ -66,7 +67,7 @@ import org.codehaus.plexus.util.StringUtils;
 /**
  * Merges a set of properties files into an output file.
  */
-@Mojo(name = "merge", defaultPhase = LifecyclePhase.PROCESS_RESOURCES, threadSafe = true)
+@Mojo(name = "merge", defaultPhase = LifecyclePhase.PROCESS_RESOURCES, requiresProject = true, threadSafe = true)
 public class MergePropertiesMojo extends AbstractMojo implements Contextualizable {
 
     /**
@@ -188,7 +189,7 @@ public class MergePropertiesMojo extends AbstractMojo implements Contextualizabl
      * </p>
      */
     @Parameter
-    private List<String> delimiters;
+    private LinkedHashSet<String> delimiters;
 
     /**
      * If false, don't use the maven's built-in delimiters.
@@ -218,6 +219,14 @@ public class MergePropertiesMojo extends AbstractMojo implements Contextualizabl
     private boolean supportMultiLineFiltering;
 
     /**
+     * Skip the execution of the plugin if you need to.
+     *
+     * @since 1.1
+     */
+    @Parameter(property = "maven.resources.skip", defaultValue = "false")
+    private boolean skip;
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -230,6 +239,11 @@ public class MergePropertiesMojo extends AbstractMojo implements Contextualizabl
      */
     @Override
     public void execute() throws MojoExecutionException {
+        if (isSkip()) {
+            getLog().info("Skipping the execution.");
+            return;
+        }
+
         mavenResourcesFiltering.setOutputFile(outputFile);
         mavenResourcesFiltering.setOverwriteProperties(overwriteProperties);
 
@@ -257,28 +271,12 @@ public class MergePropertiesMojo extends AbstractMojo implements Contextualizabl
             mavenResourcesExecution.setIncludeEmptyDirs(false);
             mavenResourcesExecution.setSupportMultiLineFiltering(supportMultiLineFiltering);
 
-            // if these are NOT set, just use the defaults, which are '${*}'
-            // and
-            // '@'.
-            if (delimiters != null && !delimiters.isEmpty()) {
-                LinkedHashSet<String> delims = new LinkedHashSet<String>();
-                if (useDefaultDelimiters) {
-                    delims.addAll(mavenResourcesExecution.getDelimiters());
-                }
+            // Handle subject of MRESOURCES-99
+            Properties additionalProperties = addSeveralSpecialProperties();
+            mavenResourcesExecution.setAdditionalProperties(additionalProperties);
 
-                for (String delim : delimiters) {
-                    if (delim == null) {
-                        // FIXME: ${filter:*} could also trigger this
-                        // condition.
-                        // Need a better long-term solution.
-                        delims.add("${*}");
-                    } else {
-                        delims.add(delim);
-                    }
-                }
-
-                mavenResourcesExecution.setDelimiters(delims);
-            }
+            // if these are NOT set, just use the defaults, which are '${*}' and '@'.
+            mavenResourcesExecution.setDelimiters(delimiters, useDefaultDelimiters);
 
             mavenResourcesFiltering.filterResources(mavenResourcesExecution);
 
@@ -286,6 +284,30 @@ public class MergePropertiesMojo extends AbstractMojo implements Contextualizabl
         } catch (MavenFilteringException e) {
             throw new MojoExecutionException(e.getMessage(), e);
         }
+    }
+
+    /**
+     * This solves https://issues.apache.org/jira/browse/MRESOURCES-99.<br/>
+     * BUT:<br/>
+     * This should be done different than defining those properties a second time, cause they have already being defined
+     * in Maven Model Builder (package org.apache.maven.model.interpolation) via BuildTimestampValueSource. But those
+     * can't be found in the context which can be got from the maven core.<br/>
+     * A solution could be to put those values into the context by Maven core so they are accessible everywhere. (I'm
+     * not sure if this is a good idea). Better ideas are always welcome. The problem at the moment is that maven core
+     * handles usage of properties and replacements in the model, but does not the resource filtering which needed some
+     * of the properties.
+     *
+     * @return the new instance with those properties.
+     */
+    private Properties addSeveralSpecialProperties() {
+        String timeStamp = new MavenBuildTimestamp().formattedTimestamp();
+        Properties additionalProperties = new Properties();
+        additionalProperties.put("maven.build.timestamp", timeStamp);
+        if (project.getBasedir() != null) {
+            additionalProperties.put("project.baseUri", project.getBasedir().getAbsoluteFile().toURI().toString());
+        }
+
+        return additionalProperties;
     }
 
     /**
@@ -409,6 +431,15 @@ public class MergePropertiesMojo extends AbstractMojo implements Contextualizabl
      */
     public void setOverwriteProperties(boolean overwriteProperties) {
         this.overwriteProperties = overwriteProperties;
+    }
+
+    /**
+     * gets the skip property value.
+     *
+     * @return the current value of the skip property
+     */
+    public boolean isSkip() {
+        return skip;
     }
 
 }
