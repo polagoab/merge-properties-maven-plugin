@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- - Copyright 2014-2015 Polago AB.
+ - Copyright 2014-2016 Polago AB.
  -
  - Licensed under the Apache License, Version 2.0 (the "License");
  - you may not use this file except in compliance with the License.
@@ -23,32 +23,17 @@
   </bannerLeft>
 
   <skin>
-    <groupId>lt.velykis.maven.skins</groupId>
-    <artifactId>reflow-maven-skin</artifactId>
-    <version>1.1.1</version>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>1.6</version>
   </skin>
 
-  <publishDate position="bottom" format="yyyy-MM-dd" />
-  <version position="bottom" />
-
-  <custom>
-    <reflowSkin>
-      <brand>
-        <name>${project.name}</name>
-        <href>${project.url}</href>
-      </brand>
-      <bottomNav>
-        <column>Documentation</column>
-        <column>Resources</column>
-        <column>reports</column>
-      </bottomNav>
-      <titleTemplate>${project.name} - %2$s</titleTemplate>
-      <skinAttribution>false</skinAttribution>
-    </reflowSkin>
-  </custom>
+  <publishDate position="right" format="yyyy-MM-dd" />
+  <version position="right" />
 
   <body>
     <head>
+      <![CDATA[
       <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -58,6 +43,7 @@
         ga('create', 'UA-8548760-13', 'auto');
         ga('send', 'pageview');
       </script>
+      ]]>
     </head>
 
     <breadcrumbs>
@@ -65,7 +51,7 @@
       <item name="${project.name}" href="http://www.polago.org/${project.artifactId}" />
     </breadcrumbs>
 
-    <menu name="Documentation">
+    <menu name="Overview">
       <item name="Introduction" href="index.html" />
       <item name="Goals" href="plugin-info.html" />
       <item name="Usage" href="usage.html" />
