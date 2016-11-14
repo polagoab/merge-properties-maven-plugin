@@ -237,7 +237,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.5.1</version>
+          <version>3.6.0</version>
           <configuration>
             <source>${jdkVersion}</source>
             <target>${jdkVersion}</target>
@@ -332,7 +332,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
-          <version>3.4</version>
+          <version>3.5.1</version>
           <dependencies>
             <!-- add support for ssh/scp -->
             <dependency>
