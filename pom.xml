@@ -38,7 +38,7 @@
     <mavenFilteringVersion>3.1.1</mavenFilteringVersion>
     <mavenVersion>3.0.4</mavenVersion>
     <mavenPluginPluginVersion>3.5</mavenPluginPluginVersion>
-    <jdkVersion>1.7</jdkVersion>
+    <jdkVersion>1.6</jdkVersion>
     <surefireVersion>2.19.1</surefireVersion>
     <docGroupId>${project.groupId}</docGroupId>
     <docArtifactId>${project.artifactId}</docArtifactId>
