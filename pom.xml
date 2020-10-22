@@ -21,25 +21,56 @@
 
   <groupId>org.polago.maven.plugins</groupId>
   <artifactId>merge-properties-maven-plugin</artifactId>
-  <version>1.1</version>
+  <version>1.2-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>Merge Properties Maven Plugin</name>
   <url>http://www.polago.org/merge-properties-maven-plugin/</url>
 
   <description>
-    Merge Properties Maven Plugin is a Maven Plugin that merges and filters a 
-    set of Java Properties files into a single file while detecting multiple 
+    Merge Properties Maven Plugin is a Maven Plugin that merges and filters a
+    set of Java Properties files into a single file while detecting multiple
     instances of the same Property Key.
   </description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <mavenFilteringVersion>3.1.1</mavenFilteringVersion>
-    <mavenVersion>3.0.4</mavenVersion>
-    <mavenPluginPluginVersion>3.5</mavenPluginPluginVersion>
-    <jdkVersion>1.7</jdkVersion>
-    <surefireVersion>2.19.1</surefireVersion>
+    <mavenVersion>3.6.0</mavenVersion>
+    <jdkVersion>1.8</jdkVersion>
+
+    <mavenFilteringVersion>3.2.0</mavenFilteringVersion>
+    <mavenPluginPluginVersion>3.6.0</mavenPluginPluginVersion>
+    <surefireVersion>3.0.0-M5</surefireVersion>
+    <junit.version>4.13.1</junit.version>
+    <maven-plugin-testing-harness.version>3.3.0</maven-plugin-testing-harness.version>
+    <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
+    <maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
+    <maven-install-plugin.version>3.0.0-M1</maven-install-plugin.version>
+    <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+    <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
+    <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
+    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+    <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
+    <maven-help-plugin.version>3.2.0</maven-help-plugin.version>
+    <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+    <maven-jxr-plugin.version>3.0.0</maven-jxr-plugin.version>
+    <maven-pmd-plugin.version>3.13.0</maven-pmd-plugin.version>
+    <maven-project-info-reports-plugin.version>3.1.1</maven-project-info-reports-plugin.version>
+    <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
+    <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+    <maven-site-plugin.version>3.9.1</maven-site-plugin.version>
+    <wagon-ssh.version>3.4.0</wagon-ssh.version>
+    <reflow-velocity-tools.version>1.1.1</reflow-velocity-tools.version>
+    <velocity.version>1.7</velocity.version>
+    <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
+    <jdepend-maven-plugin.version>2.0</jdepend-maven-plugin.version>
+    <taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
+    <versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
+    <plexus-component-metadata.version>2.1.0</plexus-component-metadata.version>
+    <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
+    <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+    <maven-invoker-plugin.version>2.0.0</maven-invoker-plugin.version>
+
     <docGroupId>${project.groupId}</docGroupId>
     <docArtifactId>${project.artifactId}</docArtifactId>
     <docVersion>${project.version}</docVersion>
@@ -131,13 +162,13 @@
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.12</version>
+        <version>${junit.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.apache.maven.plugin-testing</groupId>
         <artifactId>maven-plugin-testing-harness</artifactId>
-        <version>3.3.0</version>
+        <version>${maven-plugin-testing-harness.version}</version>
       </dependency>
 
     </dependencies>
@@ -179,65 +210,39 @@
       <plugins>
 
         <plugin>
-          <!-- fix m2e warning of ignored plugin -->
-          <groupId>org.eclipse.m2e</groupId>
-          <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version>
-          <configuration>
-            <lifecycleMappingMetadata>
-              <pluginExecutions>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.codehaus.plexus</groupId>
-                    <artifactId>plexus-component-metadata</artifactId>
-                    <versionRange>[1.0,)</versionRange>
-                    <goals>
-                      <goal>generate-metadata</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore></ignore>
-                  </action>
-                </pluginExecution>
-              </pluginExecutions>
-            </lifecycleMappingMetadata>
-          </configuration>
-        </plugin>
-
-        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>2.8.2</version>
+          <version>${maven-deploy-plugin.version}</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>
-          <version>2.5.2</version>
+          <version>${maven-install-plugin.version}</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.0.2</version>
+          <version>${maven-jar-plugin.version}</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>2.17</version>
+          <version>${maven-checkstyle-plugin.version}</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>3.0.0</version>
+          <version>${maven-clean-plugin.version}</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.6.0</version>
+          <version>${maven-compiler-plugin.version}</version>
           <configuration>
             <source>${jdkVersion}</source>
             <target>${jdkVersion}</target>
@@ -249,7 +254,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
-          <version>1.4.1</version>
+          <version>${maven-enforcer-plugin.version}</version>
           <executions>
             <execution>
               <id>enforce-versions</id>
@@ -279,19 +284,19 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-help-plugin</artifactId>
-          <version>2.2</version>
+          <version>${maven-help-plugin.version}</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.10.4</version>
+          <version>${maven-javadoc-plugin.version}</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jxr-plugin</artifactId>
-          <version>2.5</version>
+          <version>${maven-jxr-plugin.version}</version>
           <configuration>
           </configuration>
         </plugin>
@@ -299,7 +304,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-pmd-plugin</artifactId>
-          <version>3.7</version>
+          <version>${maven-pmd-plugin.version}</version>
           <configuration>
             <targetJdk>${jdkVersion}</targetJdk>
           </configuration>
@@ -308,19 +313,19 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>2.9</version>
+          <version>${maven-project-info-reports-plugin.version}</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>3.0.1</version>
+          <version>${maven-resources-plugin.version}</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.0.1</version>
+          <version>${maven-source-plugin.version}</version>
         </plugin>
 
         <plugin>
@@ -332,24 +337,24 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
-          <version>3.5.1</version>
+          <version>${maven-site-plugin.version}</version>
           <dependencies>
             <!-- add support for ssh/scp -->
             <dependency>
               <groupId>org.apache.maven.wagon</groupId>
               <artifactId>wagon-ssh</artifactId>
-              <version>2.8</version>
-            </dependency>              
+              <version>${wagon-ssh.version}</version>
+            </dependency>
             <!-- reflow-maven-skin -->
             <dependency>
               <groupId>lt.velykis.maven.skins</groupId>
               <artifactId>reflow-velocity-tools</artifactId>
-              <version>1.1.1</version>
+              <version>${reflow-velocity-tools.version}</version>
             </dependency>
             <dependency>
               <groupId>org.apache.velocity</groupId>
               <artifactId>velocity</artifactId>
-              <version>1.7</version>
+              <version>${velocity.version}</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -369,43 +374,43 @@
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.7.7.201606060606</version>
+          <version>${jacoco-maven-plugin.version}</version>
         </plugin>
 
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>jdepend-maven-plugin</artifactId>
-          <version>2.0</version>
+          <version>${jdepend-maven-plugin.version}</version>
         </plugin>
 
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>taglist-maven-plugin</artifactId>
-          <version>2.4</version>
+          <version>${taglist-maven-plugin.version}</version>
         </plugin>
 
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>versions-maven-plugin</artifactId>
-          <version>2.3</version>
+          <version>${versions-maven-plugin.version}</version>
         </plugin>
 
         <plugin>
           <groupId>org.codehaus.plexus</groupId>
           <artifactId>plexus-component-metadata</artifactId>
-          <version>1.7.1</version>
+          <version>${plexus-component-metadata.version}</version>
         </plugin>
 
         <plugin>
           <groupId>org.sonatype.plugins</groupId>
           <artifactId>nexus-staging-maven-plugin</artifactId>
-          <version>1.6.7</version>
+          <version>${nexus-staging-maven-plugin.version}</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-gpg-plugin</artifactId>
-          <version>1.6</version>
+          <version>${maven-gpg-plugin.version}</version>
         </plugin>
 
       </plugins>
@@ -647,6 +652,43 @@
 
   <profiles>
     <profile>
+      <id>only-eclipse</id>
+      <activation>
+        <property>
+          <name>m2e.version</name>
+        </property>
+      </activation>
+      <build>
+          <plugins>
+            <plugin>
+              <!-- fix m2e warning of ignored plugin -->
+              <groupId>org.eclipse.m2e</groupId>
+              <artifactId>lifecycle-mapping</artifactId>
+              <version>${lifecycle-mapping.version}</version>
+              <configuration>
+                <lifecycleMappingMetadata>
+                  <pluginExecutions>
+                    <pluginExecution>
+                      <pluginExecutionFilter>
+                        <groupId>org.codehaus.plexus</groupId>
+                        <artifactId>plexus-component-metadata</artifactId>
+                        <versionRange>[1.0,)</versionRange>
+                        <goals>
+                          <goal>generate-metadata</goal>
+                        </goals>
+                      </pluginExecutionFilter>
+                      <action>
+                        <ignore></ignore>
+                      </action>
+                    </pluginExecution>
+                  </pluginExecutions>
+                </lifecycleMappingMetadata>
+              </configuration>
+            </plugin>
+          </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>ossrh</id>
       <build>
         <plugins>
@@ -742,7 +784,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-invoker-plugin</artifactId>
-            <version>2.0.0</version>
+            <version>${maven-invoker-plugin.version}</version>
             <configuration>
               <projectsDirectory>src/it</projectsDirectory>
               <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
