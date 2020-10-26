@@ -1,7 +1,7 @@
-<?xml version="1.0"?>
-<!DOCTYPE module PUBLIC
-    "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
-    "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module
+        PUBLIC '-//Puppy Crawl//DTD Check Configuration 1.3//EN'
+        'http://www.puppycrawl.com/dtds/configuration_1_3.dtd'>
 
 <!--
 
@@ -33,8 +33,6 @@
 <module name="Checker">
     <!-- report all checks as warnings -->
     <property name="severity" value="warning"/>
-
-    <module name="SuppressionCommentFilter"/>
 
     <!--
         If you set the basedir property below, then all reported file
@@ -75,11 +73,20 @@
         <property name="message" value="Line has trailing spaces."/>
     </module>
 
+    <!-- Checks for Size Violations.                    -->
+    <!-- See http://checkstyle.sf.net/config_sizes.html -->
+    <module name="LineLength">
+        <property name="max" value="120"/>
+        <property name="ignorePattern" value="^ \* \$Source:.*|^import .*"/>
+    </module>
+
     <module name="TreeWalker">
 
-        <module name="FileContentsHolder"/>
-        
-        <property name="cacheFile" value="${checkstyle.cache.file}"/>
+        <module name="SuppressionCommentFilter">
+            <property name="offCommentFormat" value="CHECKSTYLE\:OFF\:(\w+)"/>
+            <property name="onCommentFormat" value="CHECKSTYLE\:ON\:(\w+)"/>
+            <property name="checkFormat" value="$1"/>
+        </module>
 
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
@@ -134,12 +141,7 @@
         <module name="UnusedImports"/>
 
 
-        <!-- Checks for Size Violations.                    -->
-        <!-- See http://checkstyle.sf.net/config_sizes.html -->
-        <module name="LineLength">
-          <property name="max" value="120"/>
-          <property name="ignorePattern" value="^ \* \$Source:.*|^import .*"/>
-        </module>
+
         <module name="MethodLength">
           <property name="countEmpty" value="false"/>
         </module>
