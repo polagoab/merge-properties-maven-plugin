@@ -4,3 +4,6 @@ This repository contains the source code for
 [merge-properties-maven-plugin](http://www.polago.org/merge-properties-maven-plugin), 
 a Maven Plugin that merges and filters a set of Java Properties files into 
 a single file while detecting multiple instances of the same Property Key.
+
+## Requirements
+Please use at least maven 3.6.0 and JDK 8.
