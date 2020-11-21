@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 Polago AB.
+ * Copyright 2014-2020 Polago AB.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -411,9 +411,8 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
      * @return filtered Properties
      * @throws MavenFilteringException indicating failure
      */
-    private Properties getFilteredProperties(File source, boolean filtering,
-        List<FilterWrapper> filterWrappers, String encoding)
-        throws MavenFilteringException {
+    private Properties getFilteredProperties(File source, boolean filtering, List<FilterWrapper> filterWrappers,
+        String encoding) throws MavenFilteringException {
 
         Properties p = new Properties();
         Reader r = null;
