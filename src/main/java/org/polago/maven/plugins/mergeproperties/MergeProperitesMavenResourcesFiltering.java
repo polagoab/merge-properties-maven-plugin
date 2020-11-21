@@ -37,11 +37,10 @@ package org.polago.maven.plugins.mergeproperties;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,6 +48,12 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.ConfigurationConverter;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.PropertiesConfigurationLayout;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
 import org.apache.maven.project.MavenProject;
@@ -66,6 +71,7 @@ import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.Scanner;
 import org.sonatype.plexus.build.incremental.BuildContext;
 
@@ -117,7 +123,7 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
             nonFilteredFileExtensions.addAll(userNonFilteredFileExtensions);
         }
         boolean filteredFileExtension =
-            !nonFilteredFileExtensions.contains(StringUtils.lowerCase(FileUtils.extension(fileName)));
+            !nonFilteredFileExtensions.contains(StringUtils.lowerCase(FilenameUtils.getExtension(fileName)));
         if (getLogger().isDebugEnabled()) {
             getLogger().debug(
                 "file " + fileName + " has a" + (filteredFileExtension ? " " : " non ") + "filtered file extension");
@@ -217,7 +223,7 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
             scanner.scan();
 
             List<String> includedFiles = Arrays.asList(scanner.getIncludedFiles());
-            if (ignoreDelta == false && buildContext.isIncremental() && !includedFiles.isEmpty()) {
+            if (!ignoreDelta && buildContext.isIncremental() && !includedFiles.isEmpty()) {
                 // Perform a full scan since we need to consider all files when the file list is nonEmpty in
                 // an incremental build
                 getLogger().debug("Reverting to full scan");
@@ -297,7 +303,7 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
      * @param addDefaultExcludes if true, add default excludes to the Scanner
      */
     private void setupScanner(Resource resource, Scanner scanner, boolean addDefaultExcludes) {
-        String[] includes = null;
+        String[] includes;
         if (resource.getIncludes() != null && !resource.getIncludes().isEmpty()) {
             includes = resource.getIncludes().toArray(EMPTY_STRING_ARRAY);
         } else {
@@ -305,7 +311,7 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
         }
         scanner.setIncludes(includes);
 
-        String[] excludes = null;
+        String[] excludes;
         if (resource.getExcludes() != null && !resource.getExcludes().isEmpty()) {
             excludes = resource.getExcludes().toArray(EMPTY_STRING_ARRAY);
             scanner.setExcludes(excludes);
@@ -341,27 +347,23 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
     }
 
     /**
-     * Write the Properties to the given file.
+     * Write the Properties to the given file using apache Commons-Configuration to avoid timestamp header.
      *
      * @param properties the Properties to use
      * @param file the file to store Properties into
      * @throws MavenFilteringException indicating File IO Error
      */
     protected void storeProperties(Properties properties, File file) throws MavenFilteringException {
-        OutputStream os = null;
-        try {
-            os = new FileOutputStream(file);
-            properties.store(os, null);
-        } catch (Exception e) {
+        try (FileWriter f = new FileWriter(file)) {
+            final Configuration configuration = ConfigurationConverter.getConfiguration(properties);
+            PropertiesConfiguration p = new PropertiesConfiguration();
+            PropertiesConfigurationLayout layout = new PropertiesConfigurationLayout();
+            layout.setGlobalSeparator("=");
+            p.setLayout(layout);
+            p.copy(configuration);
+            p.write(f);
+        } catch (ConfigurationException | IOException e) {
             throw new MavenFilteringException(e.getMessage(), e);
-        } finally {
-            if (os != null) {
-                try {
-                    os.close();
-                } catch (IOException e) {
-                    throw new MavenFilteringException(e.getMessage(), e);
-                }
-            }
         }
     }
 
@@ -369,7 +371,7 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
      * Merge the source as a Properties file into outputProperties.
      *
      * @param properties the Properties to merge into
-     * @param source the soure file to read Properties from
+     * @param source the source file to read Properties from
      * @param filtering true if the filterWrappers should be applied
      * @param filterWrappers the FilterWrappers to use
      * @param encoding the encoding to use when filtering
@@ -380,37 +382,55 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
     private void mergeProperties(Properties properties, File source, boolean filtering,
         List<FilterWrapper> filterWrappers, String encoding, boolean overwrite) throws MavenFilteringException {
 
-        try {
-            InputStream is = new FileInputStream(source);
-            Reader r = new InputStreamReader(is, encoding);
+        Properties p = getFilteredProperties(source, filtering, filterWrappers, encoding);
+        for (Entry<Object, Object> entry : p.entrySet()) {
+            String key = (String) entry.getKey();
+            String value = (String) entry.getValue();
+            String existing = properties.getProperty(key);
+            if (existing != null) {
+                if (overwrite) {
+                    properties.setProperty(key, value);
+                    getLogger().info("Overwriting existing Property '" + key + "' (existing value is '" + existing
+                        + "', new value is '" + value + "') while merging source: " + source);
+                } else {
+                    throw new MavenFilteringException("Property '" + key + "' already exists (existing value is '"
+                        + existing + "', new value is '" + value + "') while merging source: " + source);
+                }
+            }
+            properties.setProperty(key, value);
+        }
+    }
 
+    /**
+     * Load and filter properties.
+     *
+     * @param source the source file to read Properties from
+     * @param filtering true if the filterWrappers should be applied
+     * @param filterWrappers the FilterWrappers to use
+     * @param encoding the encoding to use when filtering
+     * @return filtered Properties
+     * @throws MavenFilteringException indicating failure
+     */
+    private Properties getFilteredProperties(File source, boolean filtering,
+        List<FilterWrapper> filterWrappers, String encoding)
+        throws MavenFilteringException {
+
+        Properties p = new Properties();
+        Reader r = null;
+        try (InputStream is = new FileInputStream(source)) {
+            r = new InputStreamReader(is, encoding);
             if (filtering) {
                 for (FilterWrapper fw : filterWrappers) {
                     r = fw.getReader(r);
                 }
             }
-            Properties p = new Properties();
             p.load(r);
-
-            for (Entry<Object, Object> entry : p.entrySet()) {
-                String key = (String) entry.getKey();
-                String value = (String) entry.getValue();
-                String existing = properties.getProperty(key);
-                if (existing != null) {
-                    if (overwrite) {
-                        properties.setProperty(key, value);
-                        getLogger().info("Overwriting existing Property '" + key + "' (existing value is '" + existing
-                            + "', new value is '" + value + "') while merging source: " + source);
-                    } else {
-                        throw new MavenFilteringException("Property '" + key + "' already exists (existing value is '"
-                            + existing + "', new value is '" + value + "') while merging source: " + source);
-                    }
-                }
-                properties.setProperty(key, value);
-            }
         } catch (IOException e) {
             throw new MavenFilteringException(e.getMessage(), e);
+        } finally {
+            IOUtil.close(r);
         }
+        return p;
     }
 
     /**

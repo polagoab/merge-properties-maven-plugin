@@ -333,7 +333,7 @@ public class MergePropertiesMojo extends AbstractMojo implements Contextualizabl
             getLog().debug("no user filter components");
         }
 
-        if (mavenFilteringComponents != null && !mavenFilteringComponents.isEmpty()) {
+        if (!mavenFilteringComponents.isEmpty()) {
             getLog().debug("execute user filters");
             for (MavenResourcesFiltering filter : mavenFilteringComponents) {
                 filter.filterResources(mavenResourcesExecution);

@@ -19,7 +19,7 @@
   <bannerLeft>
     <name>${project.organization.name}</name>
     <src>images/polago-logo.png</src>
-    <href>http://www.polago.org/</href>
+    <href>https://www.polago.org/</href>
   </bannerLeft>
 
   <skin>
@@ -47,8 +47,8 @@
     </head>
 
     <breadcrumbs>
-      <item name="Polago Open Source" href="http://www.polago.org/" />
-      <item name="${project.name}" href="http://www.polago.org/${project.artifactId}" />
+      <item name="Polago Open Source" href="https://www.polago.org/" />
+      <item name="${project.name}" href="https://www.polago.org/${project.artifactId}" />
     </breadcrumbs>
 
     <menu name="Overview">
