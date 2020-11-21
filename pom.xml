@@ -97,7 +97,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <jdkVersion>1.8</jdkVersion>
+    <java.version>1.8</java.version>
 
     <maven.version>3.6.0</maven.version>
 
@@ -324,8 +324,8 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>${maven-compiler-plugin.version}</version>
           <configuration>
-            <source>${jdkVersion}</source>
-            <target>${jdkVersion}</target>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
             <!-- workaround for https://jira.codehaus.org/browse/MCOMPILER-209 -->
             <useIncrementalCompilation>false</useIncrementalCompilation>
           </configuration>
@@ -347,7 +347,7 @@
                     <version>${maven.version}</version>
                   </requiremaven.version>
                   <requireJavaVersion>
-                    <version>${jdkVersion}</version>
+                    <version>${java.version}</version>
                   </requireJavaVersion>
                 </rules>
               </configuration>
@@ -384,7 +384,7 @@
           <artifactId>maven-pmd-plugin</artifactId>
           <version>${maven-pmd-plugin.version}</version>
           <configuration>
-            <targetJdk>${jdkVersion}</targetJdk>
+            <targetJdk>${java.version}</targetJdk>
           </configuration>
         </plugin>
 
@@ -663,7 +663,7 @@
           <minmemory>128m</minmemory>
           <maxmemory>512m</maxmemory>
           <quiet>true</quiet>
-          <source>${jdkVersion}</source>
+          <source>${java.version}</source>
         </configuration>
       </plugin>
 
