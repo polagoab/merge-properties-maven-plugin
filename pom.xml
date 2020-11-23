@@ -113,17 +113,10 @@
 
     <!-- dependencies -->
     <commons-configuration2.version>2.7</commons-configuration2.version>
-    <commons-io.version>2.8.0</commons-io.version>
-    <commons-lang3.version>3.11</commons-lang3.version>
     <groovy.version>3.0.6</groovy.version>
     <junit.version>4.13.1</junit.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
-    <org.eclipse.sisu.plexus.version>0.3.4</org.eclipse.sisu.plexus.version>
-    <plexus-classworlds.version>2.6.0</plexus-classworlds.version>
-    <plexus-component-annotations.version>2.1.0</plexus-component-annotations.version>
     <plexus-component-metadata.version>2.1.0</plexus-component-metadata.version>
-    <plexus-interpolation.version>1.26</plexus-interpolation.version>
-    <plexus-utils.version>3.3.0</plexus-utils.version>
     <wagon-ssh.version>3.4.1</wagon-ssh.version>
 
     <!-- plugins -->
@@ -193,43 +186,6 @@
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-configuration2</artifactId>
         <version>${commons-configuration2.version}</version>
-      </dependency>
-
-      <!-- Transitive dependencies -->
-      <dependency>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-classworlds</artifactId>
-        <version>${plexus-classworlds.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-component-annotations</artifactId>
-        <version>${plexus-component-annotations.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-interpolation</artifactId>
-        <version>${plexus-interpolation.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-utils</artifactId>
-        <version>${plexus-utils.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.sisu</groupId>
-        <artifactId>org.eclipse.sisu.plexus</artifactId>
-        <version>${org.eclipse.sisu.plexus.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>${commons-io.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-lang3</artifactId>
-        <version>${commons-lang3.version}</version>
       </dependency>
 
       <!-- Testing -->
