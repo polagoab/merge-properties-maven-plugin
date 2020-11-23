@@ -47,9 +47,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.TreeMap;
 
 import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.configuration2.ConfigurationConverter;
+import org.apache.commons.configuration2.MapConfiguration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.PropertiesConfigurationLayout;
 import org.apache.commons.configuration2.ex.ConfigurationException;
@@ -355,7 +356,9 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
      */
     protected void storeProperties(Properties properties, File file) throws MavenFilteringException {
         try (FileWriter f = new FileWriter(file)) {
-            final Configuration configuration = ConfigurationConverter.getConfiguration(properties);
+            TreeMap<String, Object> sortedByKeyMap = new TreeMap<>();
+            properties.entrySet().forEach(e -> sortedByKeyMap.put((String) e.getKey(), e.getValue()));
+            final Configuration configuration = new MapConfiguration(sortedByKeyMap);
             PropertiesConfiguration p = new PropertiesConfiguration();
             PropertiesConfigurationLayout layout = new PropertiesConfigurationLayout();
             layout.setGlobalSeparator("=");
