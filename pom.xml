@@ -90,7 +90,7 @@
     </snapshotRepository>
     <site>
       <id>website</id>
-      <url>${site.url}</url>
+      <url>${site.deploy.url}</url>
     </site>
   </distributionManagement>
 
@@ -98,7 +98,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <site.url>scp://www.polago.org/var/www/html/${project.artifactId}/</site.url>
+    <site.deploy.url>scp://www.polago.org/var/www/html/${project.artifactId}/</site.deploy.url>
 
     <java.version>1.8</java.version>
     <maven.version>3.6.0</maven.version>
