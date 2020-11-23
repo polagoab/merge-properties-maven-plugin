@@ -98,7 +98,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <site.deploy.url>scp://www.polago.org/var/www/html/${project.artifactId}/</site.deploy.url>
+    <site.deploy.url>scpexe://www.polago.org/var/www/html/${project.artifactId}/</site.deploy.url>
 
     <java.version>1.8</java.version>
     <maven.version>3.6.0</maven.version>
@@ -117,7 +117,7 @@
     <junit.version>4.13.1</junit.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
     <plexus-component-metadata.version>2.1.0</plexus-component-metadata.version>
-    <wagon-ssh.version>3.4.1</wagon-ssh.version>
+    <wagon-ssh-external.version>3.4.1</wagon-ssh-external.version>
 
     <!-- plugins -->
     <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
@@ -375,8 +375,8 @@
             <!-- add support for ssh/scp -->
             <dependency>
               <groupId>org.apache.maven.wagon</groupId>
-              <artifactId>wagon-ssh</artifactId>
-              <version>${wagon-ssh.version}</version>
+              <artifactId>wagon-ssh-external</artifactId>
+              <version>${wagon-ssh-external.version}</version>
             </dependency>
           </dependencies>
         </plugin>
