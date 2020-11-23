@@ -342,9 +342,9 @@
               </goals>
               <configuration>
                 <rules>
-                  <requiremaven.version>
+                  <requireMavenVersion>
                     <version>${maven.version}</version>
-                  </requiremaven.version>
+                  </requireMavenVersion>
                   <requireJavaVersion>
                     <version>${java.version}</version>
                   </requireJavaVersion>
