@@ -90,14 +90,16 @@
     </snapshotRepository>
     <site>
       <id>website</id>
-      <url>scp://www.polago.org/var/www/html/${project.artifactId}/</url>
+      <url>${site.url}</url>
     </site>
   </distributionManagement>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
+    
+    <site.url>scp://www.polago.org/var/www/html/${project.artifactId}/</site.url>
+    
     <java.version>1.8</java.version>
     <maven.version>3.6.0</maven.version>
 
@@ -154,7 +156,6 @@
     <taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
     <versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
 
-    <maven-fluido-skin.version></maven-fluido-skin.version>
   </properties>
 
   <dependencyManagement>
