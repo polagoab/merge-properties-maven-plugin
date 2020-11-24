@@ -16,13 +16,13 @@
 
 package org.polago.maven.plugins.mergeproperties;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.maven.plugin.testing.SilentLog;
 import org.apache.maven.project.MavenProject;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests the {@link MergePropertiesMojo} class.
@@ -31,7 +31,7 @@ public class MergePropertiesMojoTest {
 
     private MergePropertiesMojo mojo;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         mojo = new MergePropertiesMojo();
         MergeProperitesMavenResourcesFiltering filtering = new MergeProperitesMavenResourcesFiltering();
