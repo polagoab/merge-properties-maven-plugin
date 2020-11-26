@@ -1,5 +1,5 @@
 Download ${project.name}
-========================
+------------------------
 
 ${project.name} is available from [The Central Repository](https://search.maven.org/#search|gav|1|g:%22${project.groupId}%22%20AND%20a:%22${project.artifactId}%22).
 

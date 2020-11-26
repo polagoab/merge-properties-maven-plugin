@@ -3,3 +3,8 @@ About ${project.name}
 
 ${project.name} is a Maven Plugin that merges and filters a set of Java Properties files into a single file
 while detecting multiple instances of the same Property Key.
+
+Requirements
+------------
+
+This plugin requires Java 8 and maven 3.6.0 and.

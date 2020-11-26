@@ -1,5 +1,5 @@
 Usage
-=====
+-----
 
 The Merge Properties Maven Plugin merges properties files specified by Resource elements to the an output file located
 in an output directory. There is currently only one goal *[merge](usage.html)* that by default is bound to the
