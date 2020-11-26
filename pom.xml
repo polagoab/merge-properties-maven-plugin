@@ -20,7 +20,7 @@
 
   <groupId>org.polago.maven.plugins</groupId>
   <artifactId>merge-properties-maven-plugin</artifactId>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.2</version>
   <packaging>maven-plugin</packaging>
   <name>Merge Properties Maven Plugin</name>
 
