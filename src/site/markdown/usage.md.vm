@@ -21,7 +21,7 @@ The following example merges all properties files into one single output file:
       <artifactId>${docArtifactId}</artifactId>
       <version>${docVersion}</version>
       <configuration>
-        <outputDirectory#[[${project.build.directory}/generated-resources]]#</outputDirectory>
+        <outputDirectory>#[[${project.build.directory}/generated-resources]]#</outputDirectory>
         <outputFile>out.properties</outputFile>
         <resources>
           <resource>
