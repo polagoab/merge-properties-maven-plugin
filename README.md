@@ -1,4 +1,4 @@
-# Merge Properties Maven Plugin [![Build Status](https://travis-ci.org/polagoab/merge-properties-maven-plugin.svg?branch=master)](https://travis-ci.org/polagoab/merge-properties-maven-plugin)
+# Merge Properties Maven Plugin ![Build Status](https://github.com/polagoab/merge-properties-maven-plugin/actions/workflows/build.yml/badge.svg?branch=master)]
 
 This repository contains the source code for 
 [merge-properties-maven-plugin](http://www.polago.org/merge-properties-maven-plugin), 
