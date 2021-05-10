@@ -130,7 +130,7 @@
     <maven-failsafe-plugin.version>3.0.0-M5</maven-failsafe-plugin.version>
     <maven-filtering.version>3.2.0</maven-filtering.version>
     <maven-fluido-skin.version>1.9</maven-fluido-skin.version>
-    <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+    <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
     <maven-help-plugin.version>3.2.0</maven-help-plugin.version>
     <maven-install-plugin.version>3.0.0-M1</maven-install-plugin.version>
     <maven-invoker-plugin.version>3.2.2</maven-invoker-plugin.version>
