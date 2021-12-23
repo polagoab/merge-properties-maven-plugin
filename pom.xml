@@ -117,7 +117,7 @@
     <junit.version>5.8.2</junit.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
     <plexus-component-metadata.version>2.1.1</plexus-component-metadata.version>
-    <wagon-ssh-external.version>3.4.3</wagon-ssh-external.version>
+    <wagon-ssh-external.version>3.5.0</wagon-ssh-external.version>
 
     <!-- plugins -->
     <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
