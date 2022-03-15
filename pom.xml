@@ -147,7 +147,7 @@
     <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     <nexus-staging-maven-plugin.version>1.6.12</nexus-staging-maven-plugin.version>
     <taglist-maven-plugin.version>3.0.0</taglist-maven-plugin.version>
-    <versions-maven-plugin.version>2.9.0</versions-maven-plugin.version>
+    <versions-maven-plugin.version>2.10.0</versions-maven-plugin.version>
 
   </properties>
 
