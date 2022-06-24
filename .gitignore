@@ -1,6 +1,7 @@
 *.zip
 .DS_Store
 .classpath
+.factorypath
 .project
 nbactions.xml
 .settings
