@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2020 Polago AB.
+ * Copyright 2014-2022 Polago AB.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,6 +58,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.shared.filtering.FilterWrapper;
 import org.apache.maven.shared.filtering.MavenFileFilter;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
@@ -65,8 +66,6 @@ import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 import org.apache.maven.shared.utils.PathTool;
 import org.apache.maven.shared.utils.ReaderFactory;
 import org.apache.maven.shared.utils.StringUtils;
-import org.apache.maven.shared.utils.io.FileUtils;
-import org.apache.maven.shared.utils.io.FileUtils.FilterWrapper;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
@@ -269,7 +268,7 @@ public class MergeProperitesMavenResourcesFiltering extends AbstractLogEnabled
      */
     private void handleDefaultFilterWrappers(MavenResourcesExecution mavenResourcesExecution)
         throws MavenFilteringException {
-        List<FileUtils.FilterWrapper> filterWrappers = new ArrayList<FileUtils.FilterWrapper>();
+        List<FilterWrapper> filterWrappers = new ArrayList<>();
         if (mavenResourcesExecution.getFilterWrappers() != null) {
             filterWrappers.addAll(mavenResourcesExecution.getFilterWrappers());
         }
