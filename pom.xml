@@ -112,7 +112,7 @@
     <siteSkinVersion>${maven-fluido-skin.version}</siteSkinVersion>
 
     <!-- dependencies -->
-    <commons-configuration2.version>2.7</commons-configuration2.version>
+    <commons-configuration2.version>2.8.0</commons-configuration2.version>
     <groovy.version>3.0.11</groovy.version>
     <junit.version>5.8.2</junit.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
