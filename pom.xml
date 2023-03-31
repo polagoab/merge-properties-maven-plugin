@@ -113,7 +113,7 @@
 
     <!-- dependencies -->
     <commons-configuration2.version>2.9.0</commons-configuration2.version>
-    <groovy.version>3.0.16</groovy.version>
+    <groovy.version>3.0.17</groovy.version>
     <junit.version>5.9.2</junit.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
     <plexus-component-metadata.version>2.1.1</plexus-component-metadata.version>
