@@ -1,5 +1,5 @@
 /*
- * Copyright 1014-2016 Polago AB.
+ * Copyright 2014-2023 Polago AB.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.maven.execution.MavenSession;
@@ -55,12 +56,6 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
-import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.context.Context;
-import org.codehaus.plexus.context.ContextException;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -68,7 +63,7 @@ import org.codehaus.plexus.util.StringUtils;
  * Merges a set of properties files into an output file.
  */
 @Mojo(name = "merge", defaultPhase = LifecyclePhase.PROCESS_RESOURCES, requiresProject = true, threadSafe = true)
-public class MergePropertiesMojo extends AbstractMojo implements Contextualizable {
+public class MergePropertiesMojo extends AbstractMojo {
 
     /**
      * The Maven Project to use.
@@ -89,9 +84,10 @@ public class MergePropertiesMojo extends AbstractMojo implements Contextualizabl
     private MergeProperitesMavenResourcesFiltering mavenResourcesFiltering;
 
     /**
-     * The PlexusContainer instance to use.
+     * The user filter components to use.
      */
-    private PlexusContainer plexusContainer;
+    @Component(role = MavenResourcesFiltering.class)
+    private Map<String, MavenResourcesFiltering> mavenResourcesFilteringMap;
 
     /**
      * The output directory into which to create the outputFile.
@@ -230,14 +226,6 @@ public class MergePropertiesMojo extends AbstractMojo implements Contextualizabl
      * {@inheritDoc}
      */
     @Override
-    public void contextualize(Context context) throws ContextException {
-        plexusContainer = (PlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void execute() throws MojoExecutionException {
         if (isSkip()) {
             getLog().info("Skipping the execution.");
@@ -322,18 +310,21 @@ public class MergePropertiesMojo extends AbstractMojo implements Contextualizabl
 
         if (mavenFilteringHints != null) {
             for (String hint : mavenFilteringHints) {
-                try {
-                    mavenFilteringComponents.add((MavenResourcesFiltering) plexusContainer
-                        .lookup(MavenResourcesFiltering.class.getName(), hint));
-                } catch (ComponentLookupException e) {
-                    throw new MojoExecutionException(e.getMessage(), e);
+                MavenResourcesFiltering userFilterComponent = mavenResourcesFilteringMap.get(hint);
+                if (userFilterComponent != null) {
+                    getLog().debug("added user filter component with hint: " + hint);
+                    mavenFilteringComponents.add(userFilterComponent);
+                } else {
+                    throw new MojoExecutionException(
+                        "User filter with hint `" + hint + "` requested, but not present. Discovered filters are: "
+                            + mavenResourcesFilteringMap.keySet());
                 }
             }
         } else {
             getLog().debug("no user filter components");
         }
 
-        if (!mavenFilteringComponents.isEmpty()) {
+        if (mavenFilteringComponents != null && !mavenFilteringComponents.isEmpty()) {
             getLog().debug("execute user filters");
             for (MavenResourcesFiltering filter : mavenFilteringComponents) {
                 filter.filterResources(mavenResourcesExecution);

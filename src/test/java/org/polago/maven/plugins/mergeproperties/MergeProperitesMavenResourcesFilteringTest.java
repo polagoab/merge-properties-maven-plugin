@@ -1,5 +1,5 @@
 /*
- * Copyright 1014-2022 Polago AB.
+ * Copyright 2014-2023 Polago AB.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,12 +32,15 @@ import java.util.Properties;
 
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.testing.SilentLog;
+import org.apache.maven.shared.filtering.DefaultMavenFileFilter;
 import org.apache.maven.shared.filtering.FilterWrapper;
+import org.apache.maven.shared.filtering.MavenFileFilter;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.codehaus.plexus.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.sonatype.plexus.build.incremental.BuildContext;
 import org.sonatype.plexus.build.incremental.DefaultBuildContext;
 
 /**
@@ -50,6 +53,10 @@ public class MergeProperitesMavenResourcesFilteringTest {
         Properties storedProperties = null;
 
         File storedFile = null;
+
+        public TestMergeProperitesMavenResourcesFiltering(MavenFileFilter mavenFileFilter, BuildContext buildContext) {
+            super(mavenFileFilter, buildContext);
+        }
 
         /**
          * {@inheritDoc}
@@ -130,7 +137,8 @@ public class MergeProperitesMavenResourcesFilteringTest {
 
     @BeforeEach
     public void setUp() {
-        filtering = new TestMergeProperitesMavenResourcesFiltering();
+        filtering =
+            new TestMergeProperitesMavenResourcesFiltering(new DefaultMavenFileFilter(buildContext), buildContext);
         filtering.enableLogging(new SilentLog());
         filtering.setOutputFile(outputFile);
         filtering.setBuildContext(buildContext);

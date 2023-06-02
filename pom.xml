@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- - Copyright 2014-2022 Polago AB.
+ - Copyright 2014-2023 Polago AB.
  -
  - Licensed under the Apache License, Version 2.0 (the "License");
  - you may not use this file except in compliance with the License.
@@ -116,7 +116,6 @@
     <groovy.version>3.0.17</groovy.version>
     <junit.version>5.9.3</junit.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
-    <plexus-component-metadata.version>2.1.1</plexus-component-metadata.version>
     <wagon-ssh-external.version>3.5.3</wagon-ssh-external.version>
 
     <!-- plugins -->
@@ -147,6 +146,7 @@
     <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
     <maven-surefire-plugin.version>3.1.0</maven-surefire-plugin.version>
     <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
+    <sisu-maven-plugin.version>0.3.5</sisu-maven-plugin.version>
     <taglist-maven-plugin.version>3.0.0</taglist-maven-plugin.version>
     <versions-maven-plugin.version>2.15.0</versions-maven-plugin.version>
 
@@ -154,6 +154,13 @@
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>javax.inject</groupId>
+        <artifactId>javax.inject</artifactId>
+        <version>1</version>
+        <scope>provided</scope>
+      </dependency>
+
       <!-- Maven plugin dependencies -->
       <dependency>
         <groupId>org.apache.maven</groupId>
@@ -201,7 +208,7 @@
         <artifactId>maven-shared-utils</artifactId>
         <version>${maven-shared-utils.version}</version>
       </dependency>
-      
+
       <!-- third party dependencies -->
       <dependency>
         <groupId>org.apache.commons</groupId>
@@ -418,6 +425,12 @@
         </plugin>
 
         <plugin>
+          <groupId>org.eclipse.sisu</groupId>
+          <artifactId>sisu-maven-plugin</artifactId>
+          <version>${sisu-maven-plugin.version}</version>
+        </plugin>
+
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
           <version>${maven-site-plugin.version}</version>
@@ -468,12 +481,6 @@
         </plugin>
 
         <plugin>
-          <groupId>org.codehaus.plexus</groupId>
-          <artifactId>plexus-component-metadata</artifactId>
-          <version>${plexus-component-metadata.version}</version>
-        </plugin>
-
-        <plugin>
           <groupId>org.sonatype.plugins</groupId>
           <artifactId>nexus-staging-maven-plugin</artifactId>
           <version>${nexus-staging-maven-plugin.version}</version>
@@ -520,13 +527,15 @@
       </plugin>
 
       <plugin>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-component-metadata</artifactId>
+        <groupId>org.eclipse.sisu</groupId>
+        <artifactId>sisu-maven-plugin</artifactId>
         <executions>
           <execution>
-            <?m2e ignore?>
+            <?m2e execute onIncremental?>
+            <id>generate-index</id>
             <goals>
-              <goal>generate-metadata</goal>
+              <goal>main-index</goal>
+              <goal>test-index</goal>
             </goals>
           </execution>
         </executions>
