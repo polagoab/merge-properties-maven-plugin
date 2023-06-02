@@ -1,5 +1,5 @@
 /*
- * Copyright 1014-2016 Polago AB.
+ * Copyright 2014-2023 Polago AB.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.maven.plugin.testing.SilentLog;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.shared.filtering.DefaultMavenFileFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.sonatype.plexus.build.incremental.BuildContext;
+import org.sonatype.plexus.build.incremental.DefaultBuildContext;
 
 /**
  * Tests the {@link MergePropertiesMojo} class.
@@ -34,7 +37,10 @@ public class MergePropertiesMojoTest {
     @BeforeEach
     public void setUp() {
         mojo = new MergePropertiesMojo();
-        MergeProperitesMavenResourcesFiltering filtering = new MergeProperitesMavenResourcesFiltering();
+        BuildContext buildContext = new DefaultBuildContext();
+
+        MergeProperitesMavenResourcesFiltering filtering =
+            new MergeProperitesMavenResourcesFiltering(new DefaultMavenFileFilter(buildContext), buildContext);
         filtering.enableLogging(new SilentLog());
         mojo.setMavenResourcesFiltering(filtering);
 
