@@ -101,7 +101,7 @@
     <site.deploy.url>scpexe://www.polago.org/var/www/html/${project.artifactId}/</site.deploy.url>
 
     <java.version>1.8</java.version>
-    <maven.version>3.6.3</maven.version>
+    <maven.version>3.9.2</maven.version>
 
     <docArtifactId>${project.artifactId}</docArtifactId>
     <docGroupId>${project.groupId}</docGroupId>
