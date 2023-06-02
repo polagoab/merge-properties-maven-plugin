@@ -17,10 +17,3 @@ updates:
     schedule:
       interval: "daily"
     milestone: 5
-  - package-ecosystem: github-actions
-    directory: /
-    schedule:
-      interval: daily
-    labels:
-      - "dependencies"
-    milestone: 5
