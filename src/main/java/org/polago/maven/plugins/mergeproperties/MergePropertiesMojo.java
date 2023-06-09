@@ -113,7 +113,7 @@ public class MergePropertiesMojo extends AbstractMojo {
     /**
      * The character encoding scheme to use. Note that Java Properties files are always encoded in ISO-8859-1.
      */
-    @Parameter(property = "encoding", defaultValue = "ISO-8859-1")
+    @Parameter(property = "merge.properties.encoding", defaultValue = "ISO-8859-1")
     private String encoding;
 
     /**
@@ -144,25 +144,25 @@ public class MergePropertiesMojo extends AbstractMojo {
     /**
      * Expression preceded with this String won't be interpolated \${foo} will be replaced with ${foo}.
      */
-    @Parameter(property = "maven.resources.escapeString")
+    @Parameter(property = "merge.properties.escapeString")
     private String escapeString;
 
     /**
      * Overwrite any existing outputFile even if the outputFile file is newer.
      */
-    @Parameter(property = "maven.resources.overwrite", defaultValue = "false")
+    @Parameter(property = "merge.properties.overwrite", defaultValue = "false")
     private boolean overwrite;
 
     /**
      * Overwrite any duplicate properties instead of failing the build.
      */
-    @Parameter(property = "maven.resources.overwrite", defaultValue = "false")
+    @Parameter(property = "merge.properties.overwrite", defaultValue = "false")
     private boolean overwriteProperties;
 
     /**
      * Whether to escape backslashes and colons in windows-style paths.
      */
-    @Parameter(property = "maven.resources.escapeWindowsPaths", defaultValue = "true")
+    @Parameter(property = "merge.properties.escapeWindowsPaths", defaultValue = "true")
     private boolean escapeWindowsPaths;
 
     /**
@@ -195,9 +195,9 @@ public class MergePropertiesMojo extends AbstractMojo {
 
     /**
      * <p>
-     * List of plexus components hints which implements
-     * {@link MavenResourcesFiltering#filterResources(MavenResourcesExecution)} . They will be executed after the
-     * resources copying/filtering.
+     * List of plexus components hints which implements {@link MavenResourcesFiltering}.
+     * <p>
+     * They will be executed after the resources copying/filtering.
      * </p>
      */
     @Parameter
@@ -211,7 +211,7 @@ public class MergePropertiesMojo extends AbstractMojo {
     /**
      * Stop searching endToken at the end of line.
      */
-    @Parameter(property = "maven.resources.supportMultiLineFiltering", defaultValue = "false")
+    @Parameter(property = "merge.properties.supportMultiLineFiltering", defaultValue = "false")
     private boolean supportMultiLineFiltering;
 
     /**
@@ -219,7 +219,7 @@ public class MergePropertiesMojo extends AbstractMojo {
      *
      * @since 1.1
      */
-    @Parameter(property = "maven.resources.skip", defaultValue = "false")
+    @Parameter(property = "merge.properties.skip", defaultValue = "false")
     private boolean skip;
 
     /**
