@@ -1,6 +1,6 @@
 Download ${project.name}
 ------------------------
 
-${project.name} is available from [The Central Repository](https://search.maven.org/#search|gav|1|g:%22${project.groupId}%22%20AND%20a:%22${project.artifactId}%22).
+${project.name} is available from [Maven Central Repository](https://central.sonatype.com/search?q=g%3A${project.groupId}+a%3A${project.artifactId}).
 
 It is highly recommended to verify signatures against the public [KEYS](KEYS) used to sign the artifacts.
