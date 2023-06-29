@@ -113,7 +113,7 @@
 
     <!-- dependencies -->
     <commons-configuration2.version>2.9.0</commons-configuration2.version>
-    <groovy.version>3.0.17</groovy.version>
+    <groovy.version>3.0.18</groovy.version>
     <junit.version>5.9.3</junit.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
     <wagon-ssh-external.version>3.5.3</wagon-ssh-external.version>
