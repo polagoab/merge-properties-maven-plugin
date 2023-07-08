@@ -1,10 +1,12 @@
-# This workflow will build a Java project with Maven
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+# Build and deploy to ghcr.io
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
 
-name: Build
+name: Build and Deploy
 
 on:
-  pull_request:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
   
 jobs:
   build:
@@ -28,3 +30,5 @@ jobs:
       run: mvn -N --ntp -V -e -B -C io.takari:maven:wrapper -Dmaven=3.6.3
     - name: Build with Maven
       run: ./mvnw -V -e -B -C -Pit clean verify
+    - name: Build and Deploy Site with Maven
+      run: ./mvnw -V -e -B -C -Psite,site-deploy site -Doci.repo.prefix=ghcr.io/${{ github.repository }}/
