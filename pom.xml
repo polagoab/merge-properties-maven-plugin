@@ -899,6 +899,7 @@
                   <arguments>
                     <argument>build</argument>
                     <argument>--pull</argument>
+                    <argument>--load</argument>
                     <argument>--build-arg=GIT_COMMIT_ID=${git.commit.id}</argument>
                     <argument>--build-arg=MAINTAINER=${oci.maintainer}</argument>
                     <argument>-t</argument>
