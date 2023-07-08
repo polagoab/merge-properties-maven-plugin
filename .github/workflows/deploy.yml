@@ -15,17 +15,27 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup JDK 8
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+      with:
+        platforms: 'arm64'
+    - name: Setup Java
       uses: actions/setup-java@v3
       with:
         distribution: adopt
         java-version: 8
-    - name: Cache Maven packages
-      uses: actions/cache@v3
+        cache: maven
+    - name: Setup Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v2
       with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
+        install: true
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     - name: Setup Maven
       run: mvn -N --ntp -V -e -B -C io.takari:maven:wrapper -Dmaven=3.6.3
     - name: Build with Maven
