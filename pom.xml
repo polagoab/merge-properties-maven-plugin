@@ -98,7 +98,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <project.build.outputTimestamp>${git.commit.time}</project.build.outputTimestamp>
-    
+
     <site.deploy.url>scpexe://www.polago.org/var/www/html/${project.artifactId}/</site.deploy.url>
 
     <java.version>1.8</java.version>
@@ -127,6 +127,7 @@
     <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     <maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
     <maven-enforcer-plugin.version>3.3.0</maven-enforcer-plugin.version>
+    <exec-maven-plugin.version>3.1.0</exec-maven-plugin.version>
     <maven-failsafe-plugin.version>3.1.2</maven-failsafe-plugin.version>
     <maven-filtering.version>3.3.1</maven-filtering.version>
     <maven-fluido-skin.version>1.9</maven-fluido-skin.version>
@@ -150,6 +151,15 @@
     <sisu-maven-plugin.version>0.3.5</sisu-maven-plugin.version>
     <taglist-maven-plugin.version>3.0.0</taglist-maven-plugin.version>
     <versions-maven-plugin.version>2.16.0</versions-maven-plugin.version>
+
+    <!--  The command used for building OCI Images -->
+    <oci.cli>docker</oci.cli>
+    <!-- The build target platforms for all container images -->
+    <oci.platform>linux/amd64,linux/arm64</oci.platform>
+    <!--  The OCI Image Maintainer -->
+    <oci.maintainer>info@polago.com</oci.maintainer>
+    <!-- The OCI Repository prefix to use for all images -->
+    <oci.repo.prefix>${project.groupId}/</oci.repo.prefix>
 
   </properties>
 
@@ -506,6 +516,12 @@
         </plugin>
 
         <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>${exec-maven-plugin.version}</version>
+        </plugin>
+
+        <plugin>
           <groupId>io.github.git-commit-id</groupId>
           <artifactId>git-commit-id-maven-plugin</artifactId>
           <version>${git-commit-id-maven-plugin.version}</version>
@@ -569,7 +585,7 @@
           <dateFormat>yyyy-MM-dd'T'HH:mm:ss'Z'</dateFormat>
         </configuration>
       </plugin>
-      
+
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -846,6 +862,98 @@
               </resources>
             </configuration>
           </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>site</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-site-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>site-stage</id>
+                <phase>site</phase>
+                <goals>
+                  <goal>stage</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>oci-build</id>
+                <phase>site</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>${oci.cli}</executable>
+                  <arguments>
+                    <argument>build</argument>
+                    <argument>--pull</argument>
+                    <argument>--build-arg=GIT_COMMIT_ID=${git.commit.id}</argument>
+                    <argument>--build-arg=MAINTAINER=${oci.maintainer}</argument>
+                    <argument>-t</argument>
+                    <argument>${oci.repo.prefix}${project.artifactId}-site:${project.version}</argument>
+                    <argument>-t</argument>
+                    <argument>${oci.repo.prefix}${project.artifactId}-site:latest</argument>
+                    <argument>.</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>site-deploy</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>site-deploy-version</id>
+                <phase>site</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>${oci.cli}</executable>
+                  <arguments>
+                    <argument>push</argument>
+                    <argument>${oci.repo.prefix}${project.artifactId}-site:${project.version}</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>site-deploy-latest</id>
+                <phase>site</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>${oci.cli}</executable>
+                  <arguments>
+                    <argument>push</argument>
+                    <argument>${oci.repo.prefix}${project.artifactId}-site:latest</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
         </plugins>
       </build>
     </profile>
