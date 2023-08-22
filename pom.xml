@@ -974,7 +974,7 @@
                   <goal>install</goal>
                   <goal>run</goal>
                 </goals>
-              </execution>
+              </execution>              
             </executions>
             <configuration>
               <projectsDirectory>src/it</projectsDirectory>
@@ -982,10 +982,7 @@
               <debug>true</debug>
               <postBuildHookScript>verify</postBuildHookScript>
               <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-              <goals>
-                <goal>clean</goal>
-                <goal>process-resources</goal>
-              </goals>
+              <goals>process-resources</goals>
               <settingsFile>src/it/settings.xml</settingsFile>
             </configuration>
             <dependencies>
