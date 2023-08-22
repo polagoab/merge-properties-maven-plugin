@@ -6,4 +6,4 @@ a Maven Plugin that merges and filters a set of Java Properties files into
 a single file while detecting multiple instances of the same Property Key.
 
 ## Requirements
-Please use at least maven 3.6.3 and JDK 8.
+Please use at least maven 3.8.1 and JDK 8.
