@@ -20,6 +20,6 @@ jobs:
         java-version: 8
         cache: maven
     - name: Setup Maven
-      run: mvn -N --ntp -V -e -B -C io.takari:maven:wrapper -Dmaven=3.6.3
+      run: mvn -N --ntp -V -e -B -C io.takari:maven:wrapper -Dmaven=3.8.1
     - name: Build with Maven
       run: ./mvnw -V -e -B -C -Pit clean verify
