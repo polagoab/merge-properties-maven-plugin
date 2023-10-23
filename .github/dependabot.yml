@@ -12,6 +12,10 @@ updates:
     labels:
       - "dependencies"
     milestone: 5
+    ignore:
+      - dependency-name: io.github.git-commit-id:git-commit-id-maven-plugin
+        update-types:
+        - version-update:semver-major
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
