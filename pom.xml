@@ -128,7 +128,7 @@
     <maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
     <maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
     <exec-maven-plugin.version>3.1.1</exec-maven-plugin.version>
-    <maven-failsafe-plugin.version>3.2.3</maven-failsafe-plugin.version>
+    <maven-failsafe-plugin.version>3.2.5</maven-failsafe-plugin.version>
     <maven-filtering.version>3.3.1</maven-filtering.version>
     <maven-fluido-skin.version>1.9</maven-fluido-skin.version>
     <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
