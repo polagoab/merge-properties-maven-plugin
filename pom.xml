@@ -114,7 +114,7 @@
 
     <!-- dependencies -->
     <commons-configuration2.version>2.10.1</commons-configuration2.version>
-    <groovy.version>4.0.20</groovy.version>
+    <groovy.version>4.0.21</groovy.version>
     <junit.version>5.10.2</junit.version>
     <wagon-ssh-external.version>3.5.3</wagon-ssh-external.version>
 
