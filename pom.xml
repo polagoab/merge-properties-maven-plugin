@@ -137,7 +137,7 @@
     <maven-invoker-plugin.version>3.7.0</maven-invoker-plugin.version>
     <maven-jar-plugin.version>3.4.1</maven-jar-plugin.version>
     <maven-javadoc-plugin.version>3.7.0</maven-javadoc-plugin.version>
-    <maven-jxr-plugin.version>3.3.2</maven-jxr-plugin.version>
+    <maven-jxr-plugin.version>3.4.0</maven-jxr-plugin.version>
     <maven-plugin-plugin.version>3.13.1</maven-plugin-plugin.version>
     <maven-plugin-testing-harness.version>3.3.0</maven-plugin-testing-harness.version>
     <maven-pmd-plugin.version>3.22.0</maven-pmd-plugin.version>
