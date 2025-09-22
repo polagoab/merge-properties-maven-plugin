@@ -150,7 +150,7 @@
     <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
     <sisu-maven-plugin.version>0.3.5</sisu-maven-plugin.version>
     <taglist-maven-plugin.version>3.2.1</taglist-maven-plugin.version>
-    <versions-maven-plugin.version>2.19.0</versions-maven-plugin.version>
+    <versions-maven-plugin.version>2.19.1</versions-maven-plugin.version>
 
     <!--  The command used for building OCI Images -->
     <oci.cli>docker</oci.cli>
