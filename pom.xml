@@ -113,7 +113,7 @@
     <siteSkinVersion>${maven-fluido-skin.version}</siteSkinVersion>
 
     <!-- dependencies -->
-    <commons-configuration2.version>2.12.0</commons-configuration2.version>
+    <commons-configuration2.version>2.13.0</commons-configuration2.version>
     <groovy.version>4.0.28</groovy.version>
     <junit.version>5.13.4</junit.version>
     <wagon-ssh-external.version>3.5.3</wagon-ssh-external.version>
