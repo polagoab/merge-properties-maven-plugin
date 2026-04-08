@@ -897,6 +897,7 @@
                 <configuration>
                   <executable>${oci.cli}</executable>
                   <arguments>
+                    <argument>buildx</argument>
                     <argument>build</argument>
                     <argument>--pull</argument>
                     <argument>--load</argument>
