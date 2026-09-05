@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- - Copyright 2014-2023 Polago AB.
+ - Copyright 2014-2026 Polago AB.
  -
  - Licensed under the Apache License, Version 2.0 (the "License");
  - you may not use this file except in compliance with the License.
@@ -128,7 +128,6 @@
     <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
     <maven-enforcer-plugin.version>3.6.3</maven-enforcer-plugin.version>
     <exec-maven-plugin.version>3.6.3</exec-maven-plugin.version>
-    <maven-failsafe-plugin.version>3.6.0</maven-failsafe-plugin.version>
     <maven-filtering.version>3.5.1</maven-filtering.version>
     <maven-fluido-skin.version>1.9</maven-fluido-skin.version>
     <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
@@ -381,7 +380,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>${maven-failsafe-plugin.version}</version>
+          <version>${maven-surefire-plugin.version}</version>
         </plugin>
 
         <plugin>
