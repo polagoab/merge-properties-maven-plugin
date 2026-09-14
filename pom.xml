@@ -148,7 +148,7 @@
     <maven-surefire-plugin.version>3.6.0</maven-surefire-plugin.version>
     <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
     <sisu-maven-plugin.version>1.1.0</sisu-maven-plugin.version>
-    <taglist-maven-plugin.version>3.2.2</taglist-maven-plugin.version>
+    <taglist-maven-plugin.version>3.2.3</taglist-maven-plugin.version>
     <versions-maven-plugin.version>2.22.0</versions-maven-plugin.version>
 
     <!--  The command used for building OCI Images -->
